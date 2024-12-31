@@ -1,21 +1,301 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Helvetica", "Segoe UI Historic", "Segoe UI", "Helvetica", "Arial", sans-serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(24, 24, 24);
 }
+
+nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #252728;
+  padding: 0.5rem 1rem 0rem 1rem;
+  align-items: center;
+  border-bottom: 1px solid rgb(54, 53, 53);
+}
+nav i {
+  color: white;
+  font-size: 1.2rem;
+}
+nav i:hover {
+  background-color: rgb(80, 80, 80);
+  cursor: pointer;
+}
+nav #left {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+nav #left #facebook:hover {
+  cursor: pointer;
+}
+nav #left input {
+  padding: 0.7rem 1.5rem;
+  border-radius: 25px;
+  border: none;
+  background-color: rgb(51, 51, 52);
+  font-size: 1rem;
+  color: rgb(226, 229, 233);
+}
+nav #left input:focus-visible {
+  outline: none;
+}
+nav #left input::-moz-placeholder {
+  color: rgb(167, 165, 165);
+}
+nav #left input::placeholder {
+  color: rgb(167, 165, 165);
+}
+nav #left img {
+  width: 2.5rem;
+}
+nav #left #peopleFound {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  top: 3.28rem;
+  width: 100%;
+  box-shadow: 0 15px 15px -15px #000;
+  background-color: #252728;
+  padding: 0.5rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+nav #left #peopleFound div {
+  background-color: #252728;
+  color: white;
+  text-overflow: ellipsis;
+  flex: 1;
+  font-size: 0.95rem;
+  padding: 1rem 0.5rem;
+  border-radius: 10px;
+}
+nav #left #peopleFound div:hover {
+  background-color: rgb(56, 56, 56);
+  cursor: pointer;
+}
+nav #mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+nav #mid i {
+  color: rgb(182, 178, 178);
+  font-size: 1.3rem;
+  padding: 0.75rem 3rem;
+  border-radius: 10px;
+}
+nav #mid i:hover {
+  background-color: rgb(58, 58, 58);
+}
+nav #mid i.active {
+  color: rgb(8, 102, 255);
+  border-bottom: 3px solid rgb(8, 102, 255);
+  border-radius: 0px;
+  background-color: inherit;
+}
+nav #right {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+nav #right i {
+  background-color: rgb(58, 58, 58);
+  padding: 0.65rem;
+  border-radius: 100px;
+}
+nav #right i.active {
+  color: rgb(8, 102, 255);
+  background-color: rgb(52, 50, 66);
+}
+nav #right i:hover {
+  background-color: rgb(82, 80, 80);
+}
+
+#chat {
+  position: absolute;
+  background-color: rgb(31, 31, 31);
+  padding: 1rem;
+  top: 3rem;
+  right: 0rem;
+  color: rgb(226, 229, 233);
+  border-radius: 15px;
+  box-shadow: 0 0 10px -5px rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#chat input {
+  border-radius: 15px;
+  padding: 0.4rem 0rem 0.4rem 1rem;
+  border: none;
+  background-color: rgb(51, 51, 52);
+  font-size: 1rem;
+  color: rgb(226, 229, 233);
+}
+#chat input:focus-visible {
+  outline: none;
+}
+
+#form_container {
+  height: 91vh;
+  background-color: #f2f4f7;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5rem;
+  gap: 1rem;
+  align-items: center;
+}
+#form_container h1 {
+  color: rgb(8, 102, 255);
+  font-size: 3.5rem;
+  font-weight: bolder;
+}
+#form_container .container {
+  background-color: white;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 0 17px -8px black;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+#form_container .container h1 {
+  font-weight: 800;
+}
+#form_container .container p {
+  font-size: 1.2rem;
+}
+#form_container .container #interactives {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#form_container .container #interactives input {
+  padding: 1rem;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  width: 20rem;
+  font-family: "Helvetica", "Segoe UI Historic", "Segoe UI", "Helvetica", "Arial", sans-serif;
+}
+#form_container .container #interactives button {
+  color: white;
+  background-color: rgb(8, 102, 255);
+  border: none;
+  padding: 1rem 0rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+#form_container .container #interactives button:hover {
+  cursor: pointer;
+}
+#form_container .container #interactives button:active {
+  background-color: rgb(7, 85, 209);
+}
+#form_container .container #register {
+  font-size: 1rem;
+  text-decoration: none;
+}
+#form_container .container #register:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+#form_container * {
+  display: block;
+}
+
+#form {
+  text-align: center;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 0 17px -8px black;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem;
+}
+#form .body {
+  display: flex;
+  flex-direction: column;
+}
+#form .body *:not(legend) {
+  margin-bottom: 0.5rem;
+}
+#form .body button {
+  padding: 0.5rem;
+  margin: 0 5rem;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(0, 164, 0);
+  font-weight: 800;
+  font-size: 1rem;
+}
+#form .body button:hover {
+  cursor: pointer;
+  background-color: rgb(1, 126, 1);
+}
+#form .body button:active {
+  transform: scale(1.01);
+}
+#form .body button, #form .body a {
+  margin-top: 1rem;
+}
+#form .body legend {
+  text-align: left;
+  color: grey;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+#form .body input {
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  padding: 0.75rem;
+  font-size: 1rem;
+  flex: 1;
+}
+#form .body .info-input {
+  display: flex;
+  gap: 1rem;
+}
+#form .body .info-input select {
+  flex: 1;
+  padding: 0.5rem 0.25rem;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+#form .body .info-input label {
+  padding: 0.6rem 0.5rem;
+  border-radius: 5px;
+  display: flex;
+  flex: 1;
+}
+#form .body .info-input label #ko, #form .body .info-input label #me {
+  margin: 0;
+}
+#form .body .wrong-data {
+  border-color: red !important;
+}
+#form .body .wrong-data:focus-visible {
+  outline: 1px solid red !important;
+}
+
+#warning {
+  color: red;
+}/*# sourceMappingURL=globals.css.map */
