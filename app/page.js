@@ -1,13 +1,14 @@
 import Nav from "./components/Nav"
-import { cookies } from "next/headers"
-import { NextResponse } from "next/server"
+import { headers } from "next/headers"
 
 export default async function Home({searchParams}){
   const temp = await searchParams
   const {search = ""} = temp
+  const head = await headers()
+  const loggedId = head.get("loggedId")
   
   return (<div id="home">
-    <Nav search={search}/>
+    <Nav active="house" search={search}/>
     <div>
       <h1>Socket.io</h1>
     </div>

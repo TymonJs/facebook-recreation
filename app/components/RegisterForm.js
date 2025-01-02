@@ -95,7 +95,6 @@ export default function Form(){
                         const date = new Date()
                         date.setDate(date.getDate() + 1)
                         document.cookie = `token=${token};expire=${date}`
-                        
                         replace("/")
                     })
                     .catch(err => {

@@ -1,3 +1,3 @@
-const arr = []
+const arr = [1,2,3]
 
-if (arr) console.log(arr)
+console.log(arr.find(el => el==5));

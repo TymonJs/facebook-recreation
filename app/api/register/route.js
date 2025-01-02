@@ -16,19 +16,24 @@ export async function POST(request){
             const privateKey = srp.derivePrivateKey(salt, json.email, password)
             const verifier = srp.deriveVerifier(privateKey)
         
-            const toSend = {...rest, salt,verifier, friends : []}
+            const toSend = {
+                ...rest,
+                salt,verifier, 
+                friends : [],
+                id: prev.users?.length>0?prev.users[prev.users.length-1].id+1:1
+            }
             
             const fs = require('fs')
             
             if (prev.users){
                 prev.users.push(toSend)
-                fs.writeFile("data/database.json",JSON.stringify(prev),err => err?console.log(err):null)
+                await fs.writeFileSync("data/database.json",JSON.stringify(prev),err => err?console.log(err):null)
             }
             else{
                 const temp = {
                     users: [toSend]
                 }
-                fs.writeFile("data/database.json",JSON.stringify(temp),err => err?console.log(err):null)
+                await fs.writeFileSync("data/database.json",JSON.stringify(temp),err => err?console.log(err):null)
             }
             
         

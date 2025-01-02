@@ -14,7 +14,7 @@ export async function POST(request){
             const {proof, email, clientEphemeralPublic, token} = json
             const user = prev.users.find(u => u.email===email)
 
-            const {salt,verifier} = user
+            const {salt,verifier,id} = user
             const df = secrets.secrets.find(u => u.email===email)
             
             try{
@@ -23,10 +23,10 @@ export async function POST(request){
                 const fs = require("fs")
 
                 const newSecrets = {secrets: secrets.secrets.filter(c => c.email!==email)}
-                fs.writeFile("data/secrets.json",JSON.stringify(newSecrets),err => err?console.log(err):null)
+                await fs.writeFileSync("data/secrets.json",JSON.stringify(newSecrets),err => err?console.log(err):null)
                 
-                const newTokens = {tokens: [...tokens.tokens,token]}
-                fs.writeFile("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
+                const newTokens = {tokens: [...tokens.tokens.filter(t => t.id!=id),{token,id}]}
+                await fs.writeFileSync("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
 
                 return NextResponse.json({success:true, serverSessionProof: serverSession.proof})
             }
@@ -39,7 +39,7 @@ export async function POST(request){
         }
         
         
-
+        
         const {email,clientEphemeralPublic} = json
         const user = prev.users.find(u => u.email===email)
         
@@ -71,7 +71,7 @@ export async function POST(request){
         
 
         const fs = require('fs')
-        fs.writeFile("data/secrets.json",JSON.stringify(newJson), err => err?console.log(err):null)
+        await fs.writeFileSync("data/secrets.json",JSON.stringify(newJson), err => err?console.log(err):null)
         
         return NextResponse.json({success: true, serverEphemeralPublic,salt})
 

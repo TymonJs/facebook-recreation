@@ -7,12 +7,15 @@ import srp from "secure-remote-password/client"
 export const apiLogin = (email,password) => {
     return new Promise((resolve,reject) => {
         const clientEphemeral = srp.generateEphemeral()
+        
         fetch("api/login",{
             method: "POST",
             body: JSON.stringify({email,clientEphemeralPublic: clientEphemeral.public})
         })
         .then(res => {
-            new Response(res.body).json().then(serv => {
+            new Response(res.body).json()
+            .then(serv => {
+                
                 if (!serv.success) reject("Ten e-mail nie jest zarejestrowany")
                     else{
                         const {salt, serverEphemeralPublic} = serv
@@ -34,10 +37,16 @@ export const apiLogin = (email,password) => {
                                                         
                                 }
 
+                            }).catch(e => {
+                                console.log(e);
+                                
                             })
                         })
                     }
-            })        
+            }).catch(e => {
+                console.log(e);
+                
+            })      
                 
             
         })
@@ -58,19 +67,17 @@ export default function LoginForm(){
         apiLogin(email,password)
         .then(token => {
             const date = new Date()
-            // date.setSeconds(date.getSeconds() + 10)
+
             date.setDate(date.getDate() + 1) // ciasteczko ważne 1 dzień
 
-            // // console.log(date.toUTCString());
-            
-            
-            
             document.cookie = `token=${token};expire=${date.toUTCString()}`                                       
             
             replace("/")
 
         })
         .catch(e => {
+            console.log(e);
+            
             setWarning(e)   
         })
              
@@ -89,7 +96,7 @@ export default function LoginForm(){
                 <button id="login_button" onClick={handleClick}>Zaloguj się</button>
             </div>
             
-            <Link id="register" href="/register">Utwórz nowe konto</Link>
+            <Link id="register" href="/register" prefetch={false}>Utwórz nowe konto</Link>
         </div>
     </div>
 }

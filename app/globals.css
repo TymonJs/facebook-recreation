@@ -70,6 +70,13 @@ nav #left #peopleFound {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+nav #left #peopleFound h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+}
+nav #left #peopleFound a {
+  text-decoration: none;
+}
 nav #left #peopleFound div {
   background-color: #252728;
   color: white;
@@ -78,10 +85,18 @@ nav #left #peopleFound div {
   font-size: 0.95rem;
   padding: 1rem 0.5rem;
   border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
 }
 nav #left #peopleFound div:hover {
   background-color: rgb(56, 56, 56);
   cursor: pointer;
+}
+nav #left #peopleFound div img {
+  border-radius: 50px;
+  width: 2.5rem;
 }
 nav #mid {
   display: flex;
@@ -298,4 +313,88 @@ nav #right i:hover {
 
 #warning {
   color: red;
+}
+
+#not-found-box {
+  display: flex;
+  margin-top: 12rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+#not-found-box h1 {
+  color: rgb(176, 179, 184);
+  font-size: 2rem;
+}
+#not-found-box button {
+  padding: 0.75rem;
+  border-radius: 15px;
+  background-color: rgb(8, 102, 255);
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+#not-found-box button:hover {
+  background-color: rgb(9, 83, 204);
+  cursor: pointer;
+}
+
+#personal-page {
+  margin-top: 10rem;
+}
+#personal-page #info-header {
+  border-radius: 20px;
+  padding: 2rem;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 25rem;
+  align-items: center;
+  gap: 1rem;
+}
+#personal-page #info-header .info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+#personal-page #info-header .info .text p {
+  color: rgb(176, 179, 184);
+  margin-top: 0.25rem;
+}
+#personal-page #info-header .buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+#personal-page #info-header .buttons button {
+  padding: 1rem;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+}
+#personal-page #info-header .buttons button:hover {
+  cursor: pointer;
+}
+#personal-page #info-header .buttons button:nth-last-child(2) {
+  background-color: rgb(13, 98, 236);
+}
+#personal-page #info-header .buttons button:nth-last-child(2):hover {
+  background-color: rgb(11, 81, 196);
+}
+#personal-page #info-header .buttons button:nth-last-child(1) {
+  background-color: #252728;
+}
+#personal-page #info-header .buttons button:nth-last-child(1):hover {
+  background-color: #35383a;
+}
+#personal-page #info-header #pfp {
+  width: 10rem;
+  border-radius: 100px;
 }/*# sourceMappingURL=globals.css.map */
