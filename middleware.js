@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-// import { cookies } from "next/headers"
 import tokens from '@/data/tokens.json'
 
 export async function middleware(req) {
@@ -52,11 +51,13 @@ export async function middleware(req) {
                 })
             }
             else{
-                console.log("wtf");
-                console.log(tokens.tokens.find(e => e.id==1), token.value);
+                // console.log("wtf");
+                // console.log(token);
+                
+                // console.log(tokens.tokens.find(e => e.id==22), token);
                 
                 
-                return NextResponse.redirect(new URL("/login",req.url))
+                return NextResponse.redirect(new URL(req.url))
             }
         }
         catch(e){

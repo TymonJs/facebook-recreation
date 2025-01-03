@@ -8,7 +8,7 @@ export default async function Home({searchParams}){
   const loggedId = head.get("loggedId")
   
   return (<div id="home">
-    <Nav active="house" search={search}/>
+    <Nav active="house" search={search} loggedId={loggedId}/>
     <div>
       <h1>Socket.io</h1>
     </div>

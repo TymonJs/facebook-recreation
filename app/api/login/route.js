@@ -23,10 +23,10 @@ export async function POST(request){
                 const fs = require("fs")
 
                 const newSecrets = {secrets: secrets.secrets.filter(c => c.email!==email)}
-                await fs.writeFileSync("data/secrets.json",JSON.stringify(newSecrets),err => err?console.log(err):null)
+                fs.writeFileSync("data/secrets.json",JSON.stringify(newSecrets),err => err?console.log(err):null)
                 
                 const newTokens = {tokens: [...tokens.tokens.filter(t => t.id!=id),{token,id}]}
-                await fs.writeFileSync("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
+                fs.writeFileSync("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
 
                 return NextResponse.json({success:true, serverSessionProof: serverSession.proof})
             }
