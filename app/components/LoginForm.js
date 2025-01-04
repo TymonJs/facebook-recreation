@@ -4,28 +4,28 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import srp from "secure-remote-password/client"
 
-export const apiLogin = (email,password) => {
+export const apiLogin = (login,password) => {
     return new Promise((resolve,reject) => {
         const clientEphemeral = srp.generateEphemeral()
         
         fetch("api/login",{
             method: "POST",
-            body: JSON.stringify({email,clientEphemeralPublic: clientEphemeral.public})
+            body: JSON.stringify({login,clientEphemeralPublic: clientEphemeral.public})
         })
         .then(res => {
             new Response(res.body).json()
             .then(serv => {
                 
-                if (!serv.success) reject("Ten e-mail nie jest zarejestrowany")
+                if (!serv.success) reject("Ten login nie jest zarejestrowany")
                     else{
                         const {salt, serverEphemeralPublic} = serv
                         
-                        const privateKey = srp.derivePrivateKey(salt, email, password)
-                        const clientSession = srp.deriveSession(clientEphemeral.secret, serverEphemeralPublic, salt, email, privateKey)
+                        const privateKey = srp.derivePrivateKey(salt, login, password)
+                        const clientSession = srp.deriveSession(clientEphemeral.secret, serverEphemeralPublic, salt, login, privateKey)
                         
                         fetch("api/login",{
                             method:"POST",
-                            body: JSON.stringify({proof: clientSession.proof,email,clientEphemeralPublic: clientEphemeral.public,salt, token: clientSession.key})
+                            body: JSON.stringify({proof: clientSession.proof,login,clientEphemeralPublic: clientEphemeral.public,salt, token: clientSession.key})
                         })
                         .then(res => {
                             
@@ -60,11 +60,11 @@ export default function LoginForm(){
     
 
     const handleClick = () => {
-        const email = document.getElementsByName("email")[0].value
+        const login = document.getElementsByName("login")[0].value
         const password = document.getElementsByName("password")[0].value
 
             
-        apiLogin(email,password)
+        apiLogin(login,password)
         .then(token => {
             const date = new Date()
 
@@ -91,7 +91,7 @@ export default function LoginForm(){
             <p>Zaloguj się do Facebooka</p>
             {warning?<h4 id="warning">{warning}</h4>:null}
             <div id="interactives">
-                <input name="email" placeholder="Adres e-mail"></input>
+                <input name="login" placeholder="Login"></input>
                 <input name="password" placeholder="Hasło"></input>
                 <button id="login_button" onClick={handleClick}>Zaloguj się</button>
             </div>

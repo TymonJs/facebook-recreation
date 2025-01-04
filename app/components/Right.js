@@ -3,7 +3,7 @@ import { useState } from "react"
 import Chat from "./Chat"
 import Settings from "./Settings"
 
-export default function Right({loggedId,pfp, name}){
+export default function Right({loggedLogin,pfp, name}){
     const [chat, setChat] = useState()
     const [settings, setSettings] = useState()
 
@@ -24,7 +24,7 @@ export default function Right({loggedId,pfp, name}){
         if (settings) setSettings()
         
         else {
-            setSettings(<Settings id={loggedId} name={name} pfp={pfp}/>)
+            setSettings(<Settings login={loggedLogin} name={name} pfp={pfp}/>)
             setChat()
         }
         
@@ -34,7 +34,7 @@ export default function Right({loggedId,pfp, name}){
     }
     
     const image = pfp?
-        <img src={`pfps/${loggedId}.png`} alt='pfp' onClick={toggleSettings}></img>:
+        <img src={`pfps/${loggedLogin}.png`} alt='pfp' onClick={toggleSettings}></img>:
         <i className="fa-solid fa-user" onClick={toggleSettings}></i>
     
     

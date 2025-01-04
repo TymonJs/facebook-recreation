@@ -9,9 +9,9 @@ export default function SearchBar({peopleFound = null}){
     const {replace} = useRouter()
 
 
-    const handleClick = (name,id) => {
+    const handleClick = (name,login) => {
         const lastSearched = localStorage.getItem("lastSearched")
-        const obj = `${name}|${id}`
+        const obj = `${name}|${login}`
         if (!lastSearched) localStorage.setItem("lastSearched",obj)
         else{
             const arr = lastSearched.split(",")
@@ -35,7 +35,7 @@ export default function SearchBar({peopleFound = null}){
             .split(',')
             .map(u => {
                 const parts = u.split("|")
-                return ({name: parts[0], id: parts[1],pfp:`/pfps/${parts[1]}.png`})
+                return ({name: parts[0], login: parts[1],pfp:`/pfps/${parts[1]}.png`})
             })
             .reduce((acc,c) => [c,...acc],[])
             ,true
@@ -55,8 +55,8 @@ export default function SearchBar({peopleFound = null}){
                 const img = lastSearched
                     ?<i className="fa-solid fa-magnifying-glass"></i>
                     :<img className="pfp-mini" src={person.pfp} alt="pfp" onError={(e) => e.target.src = "/blank-pfp.png"}></img>
-
-                return <Link key={key} href={`/${person.id}`} onClick={() => handleClick(person.name,person.id)}>
+                
+                return <Link key={key} href={`/${person.login.replace("@","")}`} onClick={() => handleClick(person.name,person.login)}>
                     <div>
                         {img}{person.name}
                     </div>

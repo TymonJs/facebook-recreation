@@ -1,23 +1,12 @@
-import database from "@/data/database"
+import PageButtons from "./PageButtons"
 
 export default function MiniPage({loggedInfo,hoverInfo}){
-    const {name, lastname, friends, id} = hoverInfo
+    const {name, lastname, friends, login,requests} = hoverInfo
     const fs = require("fs")
-    const {loggedFriends, loggedId} = loggedInfo
-    const pfp = fs.existsSync(`public/pfps/${id}.png`)?`/pfps/${id}.png`:"/blank-pfp.png"
+    const {loggedFriends, loggedLogin,loggedRequests} = loggedInfo
+    const pfp = fs.existsSync(`public/pfps/${login}.png`)?`/pfps/${login}.png`:"/blank-pfp.png"
     
     const mutualFriends = loggedFriends.filter(u => friends.includes(u))
-    
-    const firstButton = friends.some(f => f==loggedId)
-        ?<button>
-            <i className="fa-solid fa-check"></i>
-            <p>Znajomi</p>
-         </button>
-        :<button>
-            <i className="fa-solid fa-user-group"></i>
-            <p>Dodaj do znajomych</p>
-         </button>
-
     
     return <>
         <div className="mini-page">
@@ -30,12 +19,10 @@ export default function MiniPage({loggedInfo,hoverInfo}){
             </div>
             
             <div className="buttons">
-                    {firstButton}
-                    <button>
-                        <i className="fa-brands fa-facebook-messenger"></i>
-                        <p>Wyślij wiadomość</p>
-                    </button>
-                </div>
+                    <PageButtons user={({friends,requests,login})}
+                    loggedLoginInfo={({friends:loggedFriends,requests:loggedRequests,login:loggedLogin})}>
+                    </PageButtons>
+            </div>
         </div>
     </>
 }

@@ -42,8 +42,8 @@ export async function middleware(req) {
             if (found){
    
                 const newHeaders = new Headers(req.headers)
-
-                newHeaders.set("loggedId",found.id)
+                
+                newHeaders.set("loggedLogin",found.login)
                 return NextResponse.next({
                     request: {
                         headers: newHeaders
@@ -51,10 +51,6 @@ export async function middleware(req) {
                 })
             }
             else{
-                // console.log("wtf");
-                // console.log(token);
-                
-                // console.log(tokens.tokens.find(e => e.id==22), token);
                 
                 
                 return NextResponse.redirect(new URL(req.url))

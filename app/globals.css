@@ -1,11 +1,12 @@
 * {
   padding: 0;
   margin: 0;
-  font-family: "Helvetica", "Segoe UI Historic", "Segoe UI", "Helvetica", "Arial", sans-serif;
+  font-family: "Segoe UI", "Segoe UI Historic", "Helvetica", "Helvetica", "Arial", sans-serif;
 }
 
 body {
   background-color: rgb(24, 24, 24);
+  min-height: 100vh;
 }
 
 nav {
@@ -16,6 +17,10 @@ nav {
   background-color: #252728;
   padding: 0.5rem 1rem 0rem 1rem;
   align-items: center;
+  box-shadow: 0px 0px 15px 1px rgb(26, 26, 26);
+  z-index: 2;
+  position: sticky;
+  top: 0;
   border-bottom: 1px solid rgb(54, 53, 53);
 }
 nav i {
@@ -32,7 +37,7 @@ nav #left {
   justify-content: space-evenly;
   position: relative;
   gap: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
 }
 nav #left #facebook:hover {
   cursor: pointer;
@@ -62,13 +67,15 @@ nav #left #peopleFound {
   display: flex;
   flex-direction: column;
   left: 0;
-  top: 3.28rem;
+  top: 3.01rem;
+  border-radius: 15px;
   width: 100%;
   box-shadow: 0 15px 15px -15px #000;
   background-color: #252728;
   padding: 0.5rem;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  z-index: 2;
 }
 nav #left #peopleFound h3 {
   color: white;
@@ -254,7 +261,7 @@ nav #right img:hover {
   border-radius: 5px;
   font-size: 1.2rem;
   width: 20rem;
-  font-family: "Helvetica", "Segoe UI Historic", "Segoe UI", "Helvetica", "Arial", sans-serif;
+  font-family: "Segoe UI", "Segoe UI Historic", "Helvetica", "Helvetica", "Arial", sans-serif;
 }
 #form_container .container #interactives button {
   color: white;
@@ -414,6 +421,9 @@ nav #right img:hover {
   flex-direction: column;
   gap: 0.5rem;
 }
+#personal-page #info-header .info .text a {
+  text-decoration: none;
+}
 #personal-page #info-header .info .text p {
   color: rgb(176, 179, 184);
 }
@@ -540,14 +550,139 @@ nav #right img:hover {
   filter: brightness(50%);
   cursor: pointer;
 }
-#personal-page #info-header .buttons {
+#personal-page #info-header #pfp {
+  width: 10rem;
+  border-radius: 100px;
+  border: 3px solid darkslategrey;
+  position: relative;
+}
+
+#my-friends-page {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+#my-friends-page .choice-bar {
+  flex: 0 0 auto;
+  position: sticky;
+  top: 0;
+  background-color: rgb(37, 39, 40);
+  padding: 1rem;
+  border-right: 1px solid rgb(54, 53, 53);
+  height: 28vh;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+#my-friends-page .choice-bar h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+#my-friends-page .choice-bar .bar-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+#my-friends-page .choice-bar .bar-buttons a {
+  flex: 1;
+  position: relative;
+  text-decoration: none;
+}
+#my-friends-page .choice-bar .bar-buttons button {
+  text-align: left;
+  flex: 1;
+  display: block;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: none;
+  background-color: inherit;
+  width: 100%;
+}
+#my-friends-page .choice-bar .bar-buttons button.active i {
+  background-color: rgb(8, 102, 255);
+}
+#my-friends-page .choice-bar .bar-buttons button.active, #my-friends-page .choice-bar .bar-buttons button:hover {
+  background-color: rgb(59, 59, 59);
+}
+#my-friends-page .choice-bar .bar-buttons button:hover {
+  cursor: pointer;
+}
+#my-friends-page .choice-bar .bar-buttons button i {
+  margin-right: 1rem;
+  background-color: rgb(57, 60, 61);
+  padding: 0.5rem;
+  color: white;
+  border-radius: 50px;
+  font-size: 1rem;
+}
+#my-friends-page .choice-bar .bar-buttons button span {
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+}
+#my-friends-page .friends {
+  flex: 4;
+  padding: 2rem;
+}
+#my-friends-page .friends h1 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+#my-friends-page .friends h1#no-reqs {
+  font-size: 2rem;
+  width: 50%;
+}
+#my-friends-page .friends div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3.5rem, 12rem));
+  gap: 1rem;
+}
+#my-friends-page .friends div .friend-card {
+  border-radius: 15px;
+  border: 1px solid lightslategrey;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(37, 39, 40);
+}
+#my-friends-page .friends div .friend-card a img {
+  width: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  box-sizing: border-box;
+}
+#my-friends-page .friends div .friend-card .friend-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+#my-friends-page .friends div .friend-card .friend-info .buttons {
+  gap: 0.5rem;
+}
+#my-friends-page .friends div .friend-card .friend-info .buttons button {
+  padding: 0.5rem 0.75rem;
+}
+#my-friends-page .friends div .friend-card .friend-info .buttons button:first-child {
+  background-color: rgb(49, 49, 49);
+}
+#my-friends-page .friends div .friend-card .friend-info .buttons button:first-child:hover {
+  background-color: rgb(66, 66, 66);
+}
+
+.buttons {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 }
-#personal-page #info-header .buttons button {
+.buttons button {
   padding: 1rem;
   border-radius: 10px;
   color: white;
@@ -555,24 +690,89 @@ nav #right img:hover {
   font-weight: 600;
   font-size: 1rem;
 }
-#personal-page #info-header .buttons button:hover {
+.buttons button:hover {
   cursor: pointer;
 }
-#personal-page #info-header .buttons button:nth-last-child(1) {
+.buttons button:nth-last-child(1) {
   background-color: rgb(13, 98, 236);
 }
-#personal-page #info-header .buttons button:nth-last-child(1):hover {
+.buttons button:nth-last-child(1):hover {
   background-color: rgb(11, 81, 196);
 }
-#personal-page #info-header .buttons button:nth-last-child(2) {
+.buttons button:nth-last-child(2) {
   background-color: #252728;
 }
-#personal-page #info-header .buttons button:nth-last-child(2):hover {
+.buttons button:nth-last-child(2):hover {
   background-color: #35383a;
 }
-#personal-page #info-header #pfp {
-  width: 10rem;
+
+.disabled {
+  pointer-events: none;
+  filter: brightness(50%);
+  filter: blur(5px);
+}
+
+#edit-form {
+  display: none;
+  position: fixed;
+  color: white;
+  background-color: #242424;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 35vw;
+  height: 70vh;
+  padding: 1rem;
+  border-radius: 15px;
+  border: 1px solid rgb(53, 53, 53);
+  box-shadow: 0px 0px 15px 0px rgb(20, 20, 20);
+  font-size: 0.9rem;
+  overflow: auto;
+}
+#edit-form #title {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 1rem;
+}
+#edit-form #title h1 {
+  text-align: center;
+}
+#edit-form #title i {
+  text-align: right;
+  padding: 1rem;
+  border-radius: 50px;
+  background-color: rgb(51, 51, 51);
+  position: absolute;
+  right: 1rem;
+  color: lightgrey;
+}
+#edit-form #title i:hover {
+  cursor: pointer;
+  background-color: rgb(70, 69, 69);
+}
+#edit-form .edits {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#edit-form .edits .head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#edit-form .edits .head p {
+  font-size: 1.2rem;
+  color: rgb(49, 124, 236);
+}
+#edit-form .edits .body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#edit-form .edits .body #pfp {
+  width: 10vw;
   border-radius: 100px;
-  border: 3px solid darkslategrey;
-  position: relative;
+}
+#edit-form.enabled {
+  display: block;
 }/*# sourceMappingURL=globals.css.map */

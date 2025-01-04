@@ -1,15 +1,14 @@
 import Nav from "./Nav"
 import database from "@/data/database.json"
-import PersonalPage from "./PersonalPage"
 import Link from "next/link"
-import {headers} from "next/headers"
 import MiniPage from "./MiniPage"
 import PageButtons from "./PageButtons"
 import PageEditButton from "./PageEditButton"
+import EditForm from "./EditForm"
 
-export default async function PersonalPageHeader({search,id,loggedId}){
-
-    const user = database.users.find(u => u.id==id)
+export default async function PersonalPageHeader({search,login,loggedLogin}){
+    
+    const user = database.users.find(u => u.login==login)
     if (!user) return <div id="not-found-box">
             <h1>Nie znaleziono tego użytkownika</h1>
             <Link href="/"><button>Wróć do strony głównej</button></Link>
@@ -17,45 +16,42 @@ export default async function PersonalPageHeader({search,id,loggedId}){
 
   
     const fs = require("fs")
-    const pfp = fs.existsSync(`public/pfps/${id}.png`)?`/pfps/${id}.png`:"/blank-pfp.png"
+    const pfp = fs.existsSync(`public/pfps/${login}.png`)?`/pfps/${login}.png`:"/blank-pfp.png"
     
-    const {name, lastname, birthdate, friends} = user
+    const {name, lastname, birthdate, friends, requests} = user
 
     const birthDateFormatted = Object.keys(birthdate)
         .map(el => birthdate[el].toString().length>1?birthdate[el]:`0${birthdate[el]}`)
         .join(".")
     
-    const loggedIdInfo = database.users.find(u => u.id==loggedId)
+    const loggedLoginInfo = database.users.find(u => u.login==loggedLogin)
 
     const limit = 6
     
-    const temp = loggedId==id
-    ?database.users.filter(u => loggedIdInfo.friends.includes(u.id))
-    :database.users.filter(c => friends.filter(u => loggedIdInfo.friends.includes(u)).includes(c.id))
+    const temp = loggedLogin==login
+    ?database.users.filter(u => loggedLoginInfo.friends.includes(u.login))
+    :database.users.filter(c => friends.filter(u => loggedLoginInfo.friends.includes(u)).includes(c.login))
 
+    
     const friendsInfo = temp
     .slice(0,limit)
     .map((u,i) => {
         
         return <div className="friend-div" key={i}>
-            <Link href={`/${u.id}`} >
-                <img className="friend-pfp"  src={fs.existsSync(`public/pfps/${u.id}.png`)?`/pfps/${u.id}.png`:`/blank-pfp.png`}>
+            <Link href={`/${u.login}`} >
+                <img className="friend-pfp"  src={fs.existsSync(`public/pfps/${u.login}.png`)?`/pfps/${u.login}.png`:`/blank-pfp.png`}>
                 </img>
             </Link>
-            <MiniPage loggedInfo={({loggedId,loggedFriends:loggedIdInfo.friends})} 
-                hoverInfo={({name:u.name,lastname:u.lastname,id:u.id,friends:u.friends})}>
+            <MiniPage loggedInfo={({loggedLogin,loggedFriends:loggedLoginInfo.friends,loggedRequests: loggedLogin.requests})} 
+                hoverInfo={({name:u.name,lastname:u.lastname,login:u.login,friends:u.friends,requests:u.requests})}>
             </MiniPage>
         </div>
         
     })
 
+    const loggedPfp = fs.existsSync(`public/pfps/${loggedLogin}.png`)?`/pfps/${loggedLogin}.png`:"/blank-pfp.png"
     
-
-    
-    
-    
-    
-    return <> <Nav search={search} loggedId={loggedId}/>
+    return <> <Nav search={search} loggedLogin={loggedLogin}/>
     <div id="personal-page">
         <div id="info-header">
             <div className="info">
@@ -63,23 +59,31 @@ export default async function PersonalPageHeader({search,id,loggedId}){
                 <div className="text">
                     <h1>{`${name} ${lastname}`}</h1>
                     <p>Data urodzenia: {birthDateFormatted}</p>
-                    <p className="friend-count"><span>{friends?friends.length:"Brak"} znajomych</span>
-                        {loggedId!=id
-                        ?<><i className="fa-solid fa-circle"></i>
-                        <span>{`${friends.filter(u => loggedIdInfo.friends.includes(u)).length} Wspólnych  znajomych`}</span></>
-                        :null}
-                    </p>
+                    <Link href={`/friends/${login}`}>
+                        <p className="friend-count"><span>{friends?friends.length:"Brak"} znajomych</span>
+                            {loggedLogin!=login
+                            ?<><i className="fa-solid fa-circle"></i>
+                            <span>{`${friends.filter(u => loggedLoginInfo.friends.includes(u)).length} Wspólnych  znajomych`}</span></>
+                            :null}
+                        </p>
+                    </Link>
                     <div className="friend-pfps-container">{friendsInfo}</div>
                 </div>
             </div>
             
-            {id==loggedIdInfo.id
+            {login==loggedLoginInfo.login
             ?<PageEditButton></PageEditButton>
-            :<PageButtons id={id} loggedIdInfo={({friends:loggedIdInfo.friends,id:loggedId})}></PageButtons>}
+            :<div className="buttons">
+                <PageButtons 
+                user={({friends,requests,login})}
+                loggedLoginInfo={({friends:loggedLoginInfo.friends,login:loggedLogin,requests:loggedLogin.requests})}>
+                </PageButtons>
+            </div>}
             
             
         </div>
     </div>
+    <EditForm pfp={loggedPfp}></EditForm>
     </>
   
 }

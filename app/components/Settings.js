@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
-export default function Settings({id,name,pfp}){
+export default function Settings({login,name,pfp}){
     const {replace} = useRouter()
 
     const logout = () => {
@@ -10,8 +10,8 @@ export default function Settings({id,name,pfp}){
     }
     
     return <div className="right-dropdown" id="settings">
-        <Link href={`/${id}`}><button>
-            <img src={pfp?`/pfps/${id}.png`:"/blank-pfp.png"} alt="pfp"></img>
+        <Link href={`/${login}`}><button>
+            <img src={pfp?`/pfps/${login}.png`:"/blank-pfp.png"} alt="pfp"></img>
             <span>{name}</span>
         </button></Link>
         <button>

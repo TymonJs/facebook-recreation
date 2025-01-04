@@ -11,21 +11,21 @@ export async function POST(request){
 
         if (json.proof) {
 
-            const {proof, email, clientEphemeralPublic, token} = json
-            const user = prev.users.find(u => u.email===email)
+            const {proof, login, clientEphemeralPublic, token} = json
+            const user = prev.users.find(u => u.login===login)
 
-            const {salt,verifier,id} = user
-            const df = secrets.secrets.find(u => u.email===email)
+            const {salt,verifier} = user
+            const df = secrets.secrets.find(u => u.login===login)
             
             try{
-                const serverSession = srp.deriveSession(df.secret, clientEphemeralPublic, salt, email, verifier, proof)                
+                const serverSession = srp.deriveSession(df.secret, clientEphemeralPublic, salt, login, verifier, proof)                
 
                 const fs = require("fs")
 
-                const newSecrets = {secrets: secrets.secrets.filter(c => c.email!==email)}
+                const newSecrets = {secrets: secrets.secrets.filter(c => c.login!==login)}
                 fs.writeFileSync("data/secrets.json",JSON.stringify(newSecrets),err => err?console.log(err):null)
                 
-                const newTokens = {tokens: [...tokens.tokens.filter(t => t.id!=id),{token,id}]}
+                const newTokens = {tokens: [...tokens.tokens.filter(t => t.login!=login),{token,login}]}
                 fs.writeFileSync("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
 
                 return NextResponse.json({success:true, serverSessionProof: serverSession.proof})
@@ -40,10 +40,10 @@ export async function POST(request){
         
         
         
-        const {email,clientEphemeralPublic} = json
-        const user = prev.users.find(u => u.email===email)
+        const {login,clientEphemeralPublic} = json
+        const user = prev.users.find(u => u.login===login)
         
-        if (!user) return NextResponse.json({success:false,msg:"This email isn't registered"})
+        if (!user) return NextResponse.json({success:false,msg:"This login isn't registered"})
 
         const {salt,verifier} = user
         const serverEphemeral = srp.generateEphemeral(verifier)
@@ -54,16 +54,16 @@ export async function POST(request){
             newJson = {
                 secrets: 
                 secrets.secrets.reduce((acc,c) => {
-                    if (c.email===email) return [...acc]
+                    if (c.login===login) return [...acc]
                     return [...acc,c]
-                },[{email,secret:serverEphemeral.secret}])
+                },[{login,secret:serverEphemeral.secret}])
     
             }
         }
         else{
             newJson = {
                 secrets: [{
-                    email,
+                    login,
                     secret:serverEphemeral.secret
                 }]
             }
@@ -80,7 +80,7 @@ export async function POST(request){
     catch (e){
         console.log(e);
         
-        return NextResponse.json({success: false ,msg: "Provide a valid json with your email and password"})
+        return NextResponse.json({success: false ,msg: "Provide a valid json with your login and password"})
     }
     
 }

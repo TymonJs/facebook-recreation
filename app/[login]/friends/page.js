@@ -4,12 +4,12 @@ import Friends from "@/app/components/Friends"
 
 export default async function FriendsPage({params,searchParams}){
     const {search = ""} = await searchParams
-    const {id} = await params
+    const {login} = await params
     const head = await headers()
-    const loggedId = head.get("loggedId")
-
+    const loggedLogin = head.get("loggedLogin")
+    
     return <>
-    <PersonalPageHeader search={search} id={id} loggedId={loggedId}></PersonalPageHeader>
+    <PersonalPageHeader search={search} login={decodeURIComponent(login)} loggedLogin={loggedLogin}></PersonalPageHeader>
     <Friends></Friends>
     </>
 }

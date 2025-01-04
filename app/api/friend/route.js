@@ -1,21 +1,19 @@
 import { NextResponse } from "next/server";
 import database from "@/data/database.json"
-import Login from "@/app/login/page";
-//POST - wysyłanie i akceptowanie zaproszenia
-//DELETE - usunięcie znajomego
-//UPDATE?
 export async function POST(req){
+    
     const json = await new Response(req.body).json()
-    const fromId = json.from
-    const toId = json.to
+    const fromLogin = json.from
+    const toLogin = json.to
+    
 
-    if (fromId == toId) return NextResponse.json({msg: "Nie można wysyłać zaproszenia do samego siebie"},{status: 406})
+    if (fromLogin == toLogin) return NextResponse.json({msg: "Nie można wysyłać zaproszenia do samego siebie"},{status: 400})
 
     const users = database.users
 
     const fUsers = users.reduce((acc,c) => {
-        if (c.id==fromId) return {...acc, from:c}
-        else if (c.id==toId) return {...acc,to:c}
+        if (c.login==fromLogin) return {...acc, from:c}
+        else if (c.login==toLogin) return {...acc,to:c}
         
         return acc
     },{})
@@ -23,27 +21,146 @@ export async function POST(req){
     const {from,to} = fUsers
     
     
-    if (!(from && to)) return NextResponse.json({msg: "Któryś z użytkowników nie istnieje"},{status: 406})
+    if (!(from && to)) return NextResponse.json({msg: "Adresat i odbiorca zaproszenia muszą być zarejestrowani"},{status: 400})
 
     const fs = require("fs")
-    // nadawca zaproszenia już został zaproszony
-    if (from.requests.includes(to.id)){
-        const newFromRequests = from.requests.reduce((acc,c)=> {
-            if (c.id==to.id) return [...acc]
+    if (from.requests.includes(to.login)){
+        const newFromRequests = from.requests.reduce((acc,c)=> {   
+            if (c==to.login) return [...acc]
             return [...acc,c]
         },[])
-        console.log();
+
+        from.requests = newFromRequests
+        from.friends.push(to.login)
+        to.friends.push(from.login)
         
+        const toSend = {
+            users: [
+                ...database.users.filter(u => u.login!=to.login && u.login!=from.login),
+                to,
+                from
+
+            ]
+        }
+        
+        fs.writeFileSync("data/database.json",JSON.stringify(toSend),err => err?console.log(err):null)
+        return NextResponse.json({msg: "Friend added"},{status: 201})
+    }
+    else{    
+        if (to.requests.includes(from.login)) return NextResponse.json({msg: "User is already invited"},{status:406})
+        
+        to.requests.push(from.login)
+        const toSend = {
+            users: [
+                ...database.users.filter(u => u.login!=to.login),
+                to
+            ]
+        }
+        console.log("wysyła się");
+        
+        fs.writeFileSync("data/database.json",JSON.stringify(toSend),err => err?console.log(err):null)
+        return NextResponse.json({msg: "Invited"},{status: 202})
         
     }
-    const fromIndex = database.users.indexOf(from)    
-    database.users[fromIndex] 
     
-    // database.users[0] = {"coś":"coś"}
-    // console.log(database.users[0]);
-    
-    return NextResponse.json({msg: "ok"})
 }
-// export default function DELETE({req}){
+export async function DELETE(req){
+    const json = await new Response(req.body).json()
+    const fromLogin = json.from
+    const toLogin = json.to
+
+    if (fromLogin == toLogin) return NextResponse.json({msg: "Nie można usunąć ze znajomych samego siebie"},{status: 400})
+
+    let from;
+    let to;
+
+    const rest = database.users.reduce((acc,c) => {
+        if (c.login==fromLogin){
+            from=c
+            return [...acc]
+        }
+        else if (c.login==toLogin){
+            to=c
+            return [...acc]
+        }
+        
+        return [...acc,c]
+    },[])
+
+    if (!(from && to)) return NextResponse.json({msg: "Adresat i odbiorca muszą być zarejestrowani"},{status: 400})
     
-// }
+    if (!(from.friends.includes(to.login))) return NextResponse.json({msg: "Adresat i odbiorca muszą być w znajomych"},{status: 406})
+
+    const newFromFriends = from.friends.reduce((acc,c) => {
+        if (c==to.login) return [...acc]
+        return [...acc,c]
+    },[])
+
+    const newToFriends = to.friends.reduce((acc,c) => {
+        if (c==from.login) return [...acc]
+        return [...acc,c]
+    },[])
+
+    from.friends = newFromFriends
+    to.friends = newToFriends
+    
+    const fs = require("fs")
+    const toSend = {
+        users: [
+            ...rest,
+            to,
+            from
+        ]
+    }
+    fs.writeFileSync("data/database.json",JSON.stringify(toSend), err => err?console.log("error"):null)
+
+    return NextResponse.json({msg:"Friend removed"},{status:200})
+    
+}
+
+export async function PUT(req){
+    const json = await new Response(req.body).json()
+    const fromLogin = json.from
+    const toLogin = json.to
+
+    let from;
+    let to;
+
+    const rest = database.users.reduce((acc,c) => {
+        if (c.login==fromLogin){
+            from=c
+            return [...acc]
+        }
+        else if (c.login==toLogin){
+            to=c
+            return [...acc]
+        }
+        
+        return [...acc,c]
+    },[])
+    
+    if (!(from && to)) return NextResponse.json({msg: "Adresat i odbiorca muszą być zarejestrowani"},{status: 400})
+    
+    if (!(to.requests.includes(from.login))) return NextResponse.json({msg: "Adresat nie zaprosił jeszcze odbiorcy"},{status: 406})
+
+    
+    const newReqs = to.requests.reduce((acc,c) => {
+        if (c==fromLogin) return [...acc]
+        return [...acc,c]
+    },[])
+    to.requests = newReqs
+    
+    const toSend = {
+        users: [
+            ...rest,
+            to,
+            from
+        ]
+        
+    }
+
+    const fs = require("fs")
+    fs.writeFileSync("data/database.json",JSON.stringify(toSend),err => err?console.log(err):null)
+    
+    return NextResponse.json({msg:"User uninvited"})
+}
