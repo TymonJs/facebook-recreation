@@ -48,8 +48,10 @@ export async function middleware(req) {
                     request: {
                         headers: newHeaders
                     }
-                })
+                }) 
+                
             }
+
             else{
                 
                 

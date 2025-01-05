@@ -1,6 +1,7 @@
 import Nav from "./components/Nav"
 import { headers } from "next/headers"
 
+
 export default async function Home({searchParams}){
   const temp = await searchParams
   const {search = ""} = temp

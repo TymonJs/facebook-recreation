@@ -23,13 +23,14 @@ export default function MyFriends({loggedLogin,invites=false,active}){
     
     const friends = invites
         ?database.users.filter(u => loggedUser.requests.includes(u.login))
-        :getFriendsFriendsInfo(database.users.filter(u => loggedUser.friends.includes(u.login)))
-
+        :getFriendsFriendsInfo(database.users.filter(u => loggedUser.friends.includes(u.login))).sort((a,b) => a.name.localeCompare(b.name))
+    
     
     const getFriendDivs = (friends) => {
         const fs = require('fs')
         return friends.map((el,i) => {
-            const pfp = fs.existsSync(`public/pfps/${el.login}`)?`/pfps/${el.login}`:"/blank-pfp.png"
+            const pfp = fs.existsSync(`public/pfps/${el.login}.png`)?`/pfps/${el.login}.png`:"/blank-pfp.png"
+            
             return <div className="friend-card" key={i}>
                 <Link href={`/${el.login}`}>
                     <img src={pfp}></img>
@@ -38,7 +39,7 @@ export default function MyFriends({loggedLogin,invites=false,active}){
                     <h3>{el.name} {el.lastname}</h3>
                     <div className="buttons">
                         <PageButtons user={({friends:el.friends,requests:el.requests,login:el.login})}
-                        loggedLoginInfo={({friends:loggedUser.friends,login:loggedUser.login,requests:loggedUser.requests})} req={true}>
+                        loggedLoginInfo={({friends:loggedUser.friends,login:loggedUser.login,requests:loggedUser.requests})} req={invites}>
                         </PageButtons>
                     </div>
                 </div>

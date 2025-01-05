@@ -58,7 +58,7 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
 
     const updateFriend = () => {
         fetch("/api/friend", {
-            method: "PUT",
+            method: "PATCH",
             body: JSON.stringify({
                 from: loggedLoginInfo.login,
                 to: login 

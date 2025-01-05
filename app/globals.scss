@@ -104,6 +104,8 @@ nav{
                 img{
                     border-radius: 50px;
                     width: 2.5rem;
+                    height: 2.5rem;
+                    object-fit: cover;
                 }
             }
         }
@@ -155,7 +157,9 @@ nav{
         }
         img{
             width: 2.3rem;
+            height: 2.5rem;
             border-radius: 100px;   
+            object-fit: cover;
             &:hover{
                 opacity: 0.7;
                 cursor: pointer;
@@ -218,6 +222,7 @@ nav{
             gap: 0.5rem;
             img{
                 width: 2.5rem;
+                height: 2.5rem;
                 &:hover{
                     opacity: 1;
                 }
@@ -538,6 +543,8 @@ nav{
                             
                             img{
                                 width: 3rem;
+                                height: 3rem;
+                                object-fit: cover;
                                 border-radius: 50px;
                             }
                             .mini-body{
@@ -546,6 +553,11 @@ nav{
                                 // justify-content: center;
                                 align-items: center;
                                 gap: 1rem;
+                                img{
+                                    width: 3rem;
+                                    height: 3rem;
+                                    object-fit: cover;
+                                }
                                 .mini-info{
                                     color: white;
                                     overflow-wrap: break-word;
@@ -577,6 +589,7 @@ nav{
                                 
                                 
                                 width: 2rem;
+                                height: 2rem;
                                 border-radius: 50px;
                                 border: 2px solid darkslategrey;
                                 
@@ -593,10 +606,12 @@ nav{
             }
         }
         #pfp{
-            width: 10rem;
-            border-radius: 100px;
+            width: 14rem;
+            height: 14rem;
+            border-radius: 100%;
             border: 3px solid darkslategrey;
             position: relative;
+            object-fit: cover;
         }
     }
     
@@ -702,9 +717,11 @@ nav{
                 background-color: rgb(37, 39, 40);
 
                 a{
-                    // width: fit-content;
+                    height: 100%;
                     img{
                         width: 100%;
+                        height: 100%;
+                        object-fit: cover;
                         border-top-left-radius: 15px;
                         border-top-right-radius: 15px;
                         box-sizing: border-box;
@@ -773,6 +790,17 @@ nav{
     filter: brightness(50%);
     filter: blur(5px);
 }
+#wrapper{
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    &.enabled{
+        display: block;
+    }
+}
 
 #edit-form{
 
@@ -783,7 +811,7 @@ nav{
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-    width: 35vw;
+    width: 30vw;
     height: 70vh;
     padding: 1rem;
     border-radius: 15px;
@@ -791,6 +819,50 @@ nav{
     box-shadow: 0px 0px 15px 0px rgb(20, 20, 20);
     font-size: 0.9rem;
     overflow: auto;
+    .btn{
+        display: flex;
+        justify-content: right;
+        align-items: flex-end;
+        height: 15vh;
+        >.submit{
+            display: flex;
+            padding: 1rem;
+            background-color: rgb(27, 108, 236);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: fit-content;
+            &:hover{
+                background-color: rgb(20, 87, 194);
+                cursor: pointer;
+            }
+        }
+        
+   }
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    
+    &::-webkit-scrollbar-track {
+        background: #252728;
+        border-radius: 8px;
+    }
+
+    
+    &::-webkit-scrollbar-thumb {
+        background: #434444;
+        border-radius: 8px; 
+        &:hover{
+            background-color: #315f73;
+        }
+    }
+
+    &.enabled{
+        display: block;
+    }
     #title{
         display: grid;
         grid-template-columns: repeat(3,1fr);
@@ -818,29 +890,90 @@ nav{
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        .head{
+        .edit{
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            p{
-                font-size: 1.2rem;
-                color: rgb(49, 124, 236);
+            flex-direction: column;
+            gap: 1rem;
+            .warning{
+                color: red;
+                font-size: 1.1rem;
             }
-        }
-        .body{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            #pfp{
-
-                width: 10vw;
-                border-radius: 100px;
+            .head{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                input{
+                    display: none;
+                }
+                label{
+                    font-size: 1.2rem;
+                    color: rgb(49, 124, 236);
+                    &:last-child{
+                        margin-left: 1rem;
+                    }
+                    &:hover{
+                        cursor: pointer;
+                        text-decoration: 1px solid rgb(49, 124, 236) underline;
+                    }
+                }
+                
             }
+            .body{
+                display: flex;
+                align-items: center;
+                &.body-center{
+                    justify-content: center;
+                }
+                &.body-space-around{
+                    justify-content: space-around;
+                    button{
+                        border: none;
+                        background-color: inherit;
+                        color: white;
+                        font-size: 1rem;
+                        padding: 1rem;
+                        border-radius: 15px;
+                        &:hover{
+                            background-color: rgb(49, 49, 49);
+                            cursor: pointer;
+                        }
+                        &.active{
+                            background-color: rgb(8, 102, 255);
+                            &:hover{
+                                background-color: rgb(7, 92, 230);
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                #pfp{
+    
+                    width: 200px;
+                    height: 200px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                    &:hover{
+                        cursor: pointer;
+                        opacity: .8;
+                    }
+                }
+                input{
+                    background-color: inherit;
+                    border: none;
+                    border-bottom: 1px solid lightslategrey;
+                    font-size: 1.2rem;
+                    width: 100%;
+                    color: white;
+                    &:focus-visible{
+                        outline: none;
+                    }
+                }
+            }
+    
         }
-
     }
     
-    &.enabled{
-        display: block;
-    }
+    
+    
 }

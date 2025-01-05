@@ -1,9 +1,15 @@
 import Right from "./Right"
 import Link from "next/link"
 import SearchBar from "./SearchBar"
-import database from "@/data/database.json"
+// import db from "@/data/database.json"
+
 export default async function Nav({active="", search="", loggedLogin=null}){
-    // const {replace} = useRouter()
+    
+    const res = await fetch("http://localhost:3000/api/data",{
+        method: "GET"
+    })
+    const db = (await new Response(res.body).json()).database
+
     const links = ["",`friends`,"groups"]
     const mid_menu_icons = ["house","user-group","users"].map((el,i) => {    
         const temp = active===el?`fa-${el} active`:`fa-${el}`
@@ -11,11 +17,11 @@ export default async function Nav({active="", search="", loggedLogin=null}){
         const icon = <Link href={`/${links[i]}`} key={i}><i className={`fa-solid ${temp}`}></i></Link>
         return icon
     })
-    // const database = await import ("@/data/database.json")
+    
 
     const fs = require("fs")
     const peopleFound = search?
-    database.users.filter(u => {     
+    db.users.filter(u => {     
         return (`${u.name} ${u.lastname}`
             .toLowerCase()
             .includes(search.toLowerCase())
@@ -28,8 +34,8 @@ export default async function Nav({active="", search="", loggedLogin=null}){
     }):null
     const pfpExists = fs.existsSync(`public/pfps/${loggedLogin}.png`)
     
-    
-    const {name, lastname} = database.users.find(u => u.login == loggedLogin)
+    const {name, lastname} = db.users.find(u => u.login == loggedLogin)
+
 
     return (<nav>
         <div id="left">

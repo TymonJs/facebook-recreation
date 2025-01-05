@@ -104,6 +104,9 @@ nav #left #peopleFound div:hover {
 nav #left #peopleFound div img {
   border-radius: 50px;
   width: 2.5rem;
+  height: 2.5rem;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 nav #mid {
   display: flex;
@@ -148,7 +151,10 @@ nav #right i:hover {
 }
 nav #right img {
   width: 2.3rem;
+  height: 2.5rem;
   border-radius: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 nav #right img:hover {
   opacity: 0.7;
@@ -204,6 +210,7 @@ nav #right img:hover {
 }
 .right-dropdown#settings button img {
   width: 2.5rem;
+  height: 2.5rem;
 }
 .right-dropdown#settings button img:hover {
   opacity: 1;
@@ -514,6 +521,9 @@ nav #right img:hover {
 }
 #personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page img {
   width: 3rem;
+  height: 3rem;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 50px;
 }
 #personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body {
@@ -521,6 +531,12 @@ nav #right img:hover {
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+}
+#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body img {
+  width: 3rem;
+  height: 3rem;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 #personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body .mini-info {
   color: white;
@@ -543,6 +559,7 @@ nav #right img:hover {
 }
 #personal-page #info-header .info .text .friend-pfps-container .friend-div a .friend-pfp {
   width: 2rem;
+  height: 2rem;
   border-radius: 50px;
   border: 2px solid darkslategrey;
 }
@@ -551,10 +568,13 @@ nav #right img:hover {
   cursor: pointer;
 }
 #personal-page #info-header #pfp {
-  width: 10rem;
-  border-radius: 100px;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 100%;
   border: 3px solid darkslategrey;
   position: relative;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 #my-friends-page {
@@ -649,8 +669,14 @@ nav #right img:hover {
   justify-content: space-between;
   background-color: rgb(37, 39, 40);
 }
+#my-friends-page .friends div .friend-card a {
+  height: 100%;
+}
 #my-friends-page .friends div .friend-card a img {
   width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   box-sizing: border-box;
@@ -712,6 +738,18 @@ nav #right img:hover {
   filter: blur(5px);
 }
 
+#wrapper {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+#wrapper.enabled {
+  display: block;
+}
+
 #edit-form {
   display: none;
   position: fixed;
@@ -720,7 +758,7 @@ nav #right img:hover {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 35vw;
+  width: 30vw;
   height: 70vh;
   padding: 1rem;
   border-radius: 15px;
@@ -728,6 +766,45 @@ nav #right img:hover {
   box-shadow: 0px 0px 15px 0px rgb(20, 20, 20);
   font-size: 0.9rem;
   overflow: auto;
+}
+#edit-form .btn {
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+  height: 15vh;
+}
+#edit-form .btn > .submit {
+  display: flex;
+  padding: 1rem;
+  background-color: rgb(27, 108, 236);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+#edit-form .btn > .submit:hover {
+  background-color: rgb(20, 87, 194);
+  cursor: pointer;
+}
+#edit-form::-webkit-scrollbar {
+  width: 12px;
+}
+#edit-form::-webkit-scrollbar-track {
+  background: #252728;
+  border-radius: 8px;
+}
+#edit-form::-webkit-scrollbar-thumb {
+  background: #434444;
+  border-radius: 8px;
+}
+#edit-form::-webkit-scrollbar-thumb:hover {
+  background-color: #315f73;
+}
+#edit-form.enabled {
+  display: block;
 }
 #edit-form #title {
   display: grid;
@@ -755,24 +832,82 @@ nav #right img:hover {
   flex-direction: column;
   gap: 1rem;
 }
-#edit-form .edits .head {
+#edit-form .edits .edit {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#edit-form .edits .edit .warning {
+  color: red;
+  font-size: 1.1rem;
+}
+#edit-form .edits .edit .head {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-#edit-form .edits .head p {
+#edit-form .edits .edit .head input {
+  display: none;
+}
+#edit-form .edits .edit .head label {
   font-size: 1.2rem;
   color: rgb(49, 124, 236);
 }
-#edit-form .edits .body {
+#edit-form .edits .edit .head label:last-child {
+  margin-left: 1rem;
+}
+#edit-form .edits .edit .head label:hover {
+  cursor: pointer;
+  -webkit-text-decoration: 1px solid rgb(49, 124, 236) underline;
+          text-decoration: 1px solid rgb(49, 124, 236) underline;
+}
+#edit-form .edits .edit .body {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
-#edit-form .edits .body #pfp {
-  width: 10vw;
-  border-radius: 100px;
+#edit-form .edits .edit .body.body-center {
+  justify-content: center;
 }
-#edit-form.enabled {
-  display: block;
+#edit-form .edits .edit .body.body-space-around {
+  justify-content: space-around;
+}
+#edit-form .edits .edit .body.body-space-around button {
+  border: none;
+  background-color: inherit;
+  color: white;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 15px;
+}
+#edit-form .edits .edit .body.body-space-around button:hover {
+  background-color: rgb(49, 49, 49);
+  cursor: pointer;
+}
+#edit-form .edits .edit .body.body-space-around button.active {
+  background-color: rgb(8, 102, 255);
+}
+#edit-form .edits .edit .body.body-space-around button.active:hover {
+  background-color: rgb(7, 92, 230);
+}
+#edit-form .edits .edit .body #pfp {
+  width: 200px;
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+}
+#edit-form .edits .edit .body #pfp:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+#edit-form .edits .edit .body input {
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid lightslategrey;
+  font-size: 1.2rem;
+  width: 100%;
+  color: white;
+}
+#edit-form .edits .edit .body input:focus-visible {
+  outline: none;
 }/*# sourceMappingURL=globals.css.map */

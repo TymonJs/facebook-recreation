@@ -20,6 +20,7 @@ export async function POST(req){
 
     const {from,to} = fUsers
     
+    if (from.friends.includes(to.login)) return NextResponse.json({msg: "Odbiorca zaproszenia już jest dodany w znajomych"},{status: 400})
     
     if (!(from && to)) return NextResponse.json({msg: "Adresat i odbiorca zaproszenia muszą być zarejestrowani"},{status: 400})
 
@@ -47,7 +48,7 @@ export async function POST(req){
         return NextResponse.json({msg: "Friend added"},{status: 201})
     }
     else{    
-        if (to.requests.includes(from.login)) return NextResponse.json({msg: "User is already invited"},{status:406})
+        if (to.requests.includes(from.login)) return NextResponse.json({msg: "Użytkownik został już  zaproszony"},{status:406})
         
         to.requests.push(from.login)
         const toSend = {
@@ -56,7 +57,6 @@ export async function POST(req){
                 to
             ]
         }
-        console.log("wysyła się");
         
         fs.writeFileSync("data/database.json",JSON.stringify(toSend),err => err?console.log(err):null)
         return NextResponse.json({msg: "Invited"},{status: 202})
@@ -118,7 +118,7 @@ export async function DELETE(req){
     
 }
 
-export async function PUT(req){
+export async function PATCH(req){
     const json = await new Response(req.body).json()
     const fromLogin = json.from
     const toLogin = json.to

@@ -41,8 +41,9 @@ export async function POST(request){
     
         return NextResponse.json({success: true, msg: "User has been registered"})
     }
-    catch {
-        return NextResponse.json({success:false, msg: "Provide a valid json with your information"})
+    catch(e) {
+        console.log(e)
+        return NextResponse.json({success:false, msg: "Provide a valid json with your information"},{status:400})
     }
     
     
