@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import db from "@/data/database.json"
+
+// GET - login
+// POST - register
+// PATCH - edit profile
+// DELETE - rm account
+
 export async function PATCH(req){
     
     const json = await new Response(req.body).json()
@@ -28,6 +34,7 @@ export async function PATCH(req){
         const base = pfp.split(',')[1]
         const buffer = Buffer.from(base, 'base64');
         fs.writeFileSync(`public/pfps/${login}.png`,buffer,err => err?console.log(err):null)
+        if (!user.pfp) user.pfp=`/pfps/${user.login}.png`
     }
 
     fs.writeFileSync("data/database.json",JSON.stringify({

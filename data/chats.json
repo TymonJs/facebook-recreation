@@ -1,0 +1,32 @@
+{
+  "chats": [
+    {
+      "users": [
+        "asd",
+        "sofa"
+      ],
+      "messages": [
+        {
+          "by": "asd",
+          "text": "nowa wiadomosc"
+        },
+        {
+          "by": "asd",
+          "text": "hej"
+        }
+      ]
+    },
+    {
+      "users": [
+        "asd",
+        "kangur"
+      ],
+      "messages": [
+        {
+          "by": "kangur",
+          "text": "nowa wiadomosc"
+        }
+      ]
+    }
+  ]
+}

@@ -1,15 +1,42 @@
 'use client'
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import Link from "next/link"
+import {getResponse, pfpOrDefault} from "@/public/consts"
+import debounce from "lodash/debounce"
 
-export default function SearchBar({peopleFound = null}){
+export default function SearchBar({search="", loggedLogin}){
     const searchParams = useSearchParams()
     const urlPath = usePathname()
     const {replace} = useRouter()
 
+    const input = useRef()
+    const [peopleFound,setPeopleFound] = useState(null)
 
-    const handleClick = (name,login) => {
+    useEffect(() => {
+        if (search) {
+            fetch(`http://localhost:3000/api/users?search=${search}`,{
+                method: "GET"
+            })
+            .then(res => {
+                if (res.ok) getResponse(res).then(ppl => {
+                    setPeopleFound(ppl.users
+                        .filter(u => u.login!=loggedLogin)
+                        .slice(0,8)
+                        .map(u => {
+                            const pfp = pfpOrDefault(u.pfp)
+                            return ({name:`${u.name} ${u.lastname}`, login:u.login, pfp})
+                        })
+                    )
+                })
+            })
+        }
+        else setPeopleFound(null)
+
+     },[search])
+    
+
+    const setStorage = (name,login) => {
         const lastSearched = localStorage.getItem("lastSearched")
         const obj = `${name}|${login}`
         if (!lastSearched) localStorage.setItem("lastSearched",obj)
@@ -19,27 +46,24 @@ export default function SearchBar({peopleFound = null}){
             
             if (i > -1) arr.splice(i,1)
             
-      
             arr.push(obj)
             localStorage.setItem("lastSearched",arr.slice(arr.length>8?1:0,9))
-
         }
         
     }
     const lastOrCurrSearch = (peopleFound) => {
         const lastSearched = localStorage.getItem("lastSearched")
-        const res = (peopleFound || (!lastSearched))?
-            peopleToDivs(peopleFound):
+        const res = (peopleFound || (!lastSearched))
+            ?peopleToDivs(peopleFound)
+            :peopleToDivs(lastSearched
+                .split(',')
+                .map(u => {
+                    const parts = u.split("|")
+                    return ({name: parts[0], login: parts[1],pfp:`/pfps/${parts[1]}.png`})
+                })
+                .reduce((acc,c) => [c,...acc],[])
+                ,true)
 
-            peopleToDivs(lastSearched
-            .split(',')
-            .map(u => {
-                const parts = u.split("|")
-                return ({name: parts[0], login: parts[1],pfp:`/pfps/${parts[1]}.png`})
-            })
-            .reduce((acc,c) => [c,...acc],[])
-            ,true
-        )
         setPeopleDivs(res)
         return res
     }
@@ -51,24 +75,23 @@ export default function SearchBar({peopleFound = null}){
             <div id="peopleFound">
                 <h3>{lastSearched?"Ostatnie wyszukiwania":"Wyniki wyszukiwania"}</h3>
                 {peopleFound.map((person,key) => {
-
-                const img = lastSearched
-                    ?<i className="fa-solid fa-magnifying-glass"></i>
-                    :<img className="pfp-mini" src={person.pfp} alt="pfp" onError={(e) => e.target.src = "/blank-pfp.png"}></img>
-                
-                return <Link key={key} href={`/${person.login.replace("@","")}`} onClick={() => handleClick(person.name,person.login)}>
-                    <div>
-                        {img}{person.name}
-                    </div>
-                </Link>
-    })}
+                    const img = lastSearched
+                        ?<i className="fa-solid fa-magnifying-glass"></i>
+                        :<img className="pfp-mini" src={person.pfp} alt="pfp" onError={(e) => e.target.src = "/blank-pfp.png"}></img>
+                    
+                    return <Link key={key} href={`/${person.login}`} onClick={() => setStorage(person.name,person.login)}>
+                        <div>
+                            {img}{person.name}
+                        </div>
+                    </Link>
+                })}
             </div>:null
     }
     const divs = peopleToDivs(peopleFound)
 
     const [peopleDivs,setPeopleDivs] = useState(divs)
     useEffect(() => {
-        document.getElementById("searchUserInput") === document.activeElement?lastOrCurrSearch(peopleFound):setPeopleDivs(null)
+        input.current === document.activeElement?lastOrCurrSearch(peopleFound):setPeopleDivs(null)
     },[peopleFound])
     
     
@@ -86,18 +109,21 @@ export default function SearchBar({peopleFound = null}){
 
     const handleBlur = () => {
         setTimeout(() => {
-            setPeopleDivs(null)
+            setPeopleDivs([])
         }, 100);
     }
     
+    const debouncedHandler = useCallback(
+        debounce((val) => handleInput(val),150),[]
+    )
     return <>
         <input type="text" 
-            onInput={(e) => handleInput(e.target.value,peopleFound)}
+            onInput={(e) => debouncedHandler(e.target.value)}
             placeholder="Szukaj na Facebooku"
             onFocus={() => handleFocus(divs)}
             onBlur={() => handleBlur()}
-            // defaultValue={searchParams.get("search")?.toString()}
             id="searchUserInput"
+            ref={input}
             autoComplete="off"
             >
         </input> 

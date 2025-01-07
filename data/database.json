@@ -126,7 +126,8 @@
       "friends": [
         "asd"
       ],
-      "requests": []
+      "requests": [],
+      "pfp": "/pfps/sofa.png"
     },
     {
       "name": "Tadeusz",
@@ -240,7 +241,8 @@
       "friends": [
         "asd"
       ],
-      "requests": []
+      "requests": [],
+      "pfp": "/pfps/julia.png"
     },
     {
       "name": "test",
@@ -261,8 +263,9 @@
         "kangur",
         "asd"
       ],
-      "friendPrivacy":"friends",
-      "requests": []
+      "friendPrivacy": "friends",
+      "requests": [],
+      "pfp": "/pfps/test.png"
     },
     {
       "name": "Dawid",
@@ -293,23 +296,6 @@
       "verifier": "2c840c7a9278440dd801488c28f9729fb4d1f569e01f7e52c6d5149ce0fd25521435c3c3b596bf660fd01d457963275d47bab1eeae66d1b1f3b9a037f67978eddbb9461980ae3bd9e6c0baf0e90b329f69f80e83fa813353207a9c495e760d75467ca8e1769835fa4a5d68f2eb546f0bfb94ecf87cbe0ed08f20e7fd2a8f75c7100d65f043ffe2ac74f2ed6efc1a0158d753e3645cd8e6310966f4039bfbcf2ac5a5ae235a0b837fe2454964ab749c8beab32699eba4c805cb0ad5c53d06e21be472499d8d97e7e772d7c8da15c65703632b9b981f0645adcdda01d5b8923c2e786c295e0395f7b66cb950dc50a81ab38716c51e38e9eb93b73bc9ea6d6d3129",
       "friends": [],
       "requests": []
-    },
-    {
-      "name": "Marcin",
-      "lastname": "Król",
-      "gender": "mężczyzna",
-      "birthdate": {
-        "day": 4,
-        "month": 8,
-        "year": 2017
-      },
-      "login": "król",
-      "salt": "04a7d2cb27d36c27d300012ea69552a49be6f77aaadbb06af04b21d0eef36280",
-      "verifier": "45db9c611e5387b57cf9472a6a1be8b5e6f0ddae03a1c05f3b33da6810bde13c7421bb4775f43196184c694c9074094db9059b24e6269220bb455e1caaeb6bafab2d8d422811f36f1adde2e4d33162218f38fa142dea013aa54a645e829abc229c5f3cd84598fadb1199010c369bc4e0cdab406ca1c196549ab72203a25d31164f660c858c976632ebb09df0b197285f5cda931d24faf8a4d01bc9f1df04b623c4a8dba5f26a075bd59e372ba479ac1e2a65be82f2de4ab7469cbc06cfe0aefb7ed7cc7420467beeab7fc7a86df62b092e582c9679dbcfa8dc34551db75d6066352703bfc35a92910c84ef34cbaecc38decefb5a584267abc923922412ac04cb",
-      "friends": [],
-      "requests": [
-        "test"
-      ]
     },
     {
       "name": "Kuba",
@@ -343,7 +329,8 @@
       "friends": [
         "test"
       ],
-      "requests": []
+      "requests": [],
+      "pfp": "/pfps/kangur.png"
     },
     {
       "name": "Maria",
@@ -388,7 +375,25 @@
       "salt": "1f94f409982479ded392272c0d416381f4daef79163f3cd3580dfd9f05e9dece",
       "verifier": "76b0c6b6e9c9aea7984323b47e75551ad346c4c5afe42b5a6c9950c783c44938ebc8dba47be10ebc609f96e6df02719ebc6795b1df70ad06460a0457b493c9911cc7ca2fa1f3a978914592ae2a44712e4f96d968502c1f0959ba95d36ab4e564b49544bf32e4f370214ff1da3665c532e20ad6984f3788cf8ec216c8728209989c496c83094bb65322f4eaab168ea2603232575b5d3c7d1995146172d42ac8defcd31abf465a3b0531d9138cc1d23603a0219aee004710790cfdcdec133cb350f4805c495da41c02295852a4dc5dc15edb53a3cc67a9a70eed440fbcef80620b4845fcd0340ce9e8e5d47666bc94415591e155d9dca72c3b4c23948173a43c72",
       "friends": [],
-      "requests": []
+      "requests": [],
+      "pfp": "/pfps/palacz.png"
+    },
+    {
+      "name": "Marcin",
+      "lastname": "Król",
+      "gender": "mężczyzna",
+      "birthdate": {
+        "day": 4,
+        "month": 8,
+        "year": 2017
+      },
+      "login": "król",
+      "salt": "04a7d2cb27d36c27d300012ea69552a49be6f77aaadbb06af04b21d0eef36280",
+      "verifier": "45db9c611e5387b57cf9472a6a1be8b5e6f0ddae03a1c05f3b33da6810bde13c7421bb4775f43196184c694c9074094db9059b24e6269220bb455e1caaeb6bafab2d8d422811f36f1adde2e4d33162218f38fa142dea013aa54a645e829abc229c5f3cd84598fadb1199010c369bc4e0cdab406ca1c196549ab72203a25d31164f660c858c976632ebb09df0b197285f5cda931d24faf8a4d01bc9f1df04b623c4a8dba5f26a075bd59e372ba479ac1e2a65be82f2de4ab7469cbc06cfe0aefb7ed7cc7420467beeab7fc7a86df62b092e582c9679dbcfa8dc34551db75d6066352703bfc35a92910c84ef34cbaecc38decefb5a584267abc923922412ac04cb",
+      "friends": [],
+      "requests": [
+        "test"
+      ]
     },
     {
       "name": "Tymon",
@@ -417,8 +422,9 @@
         "kangur",
         "palacz"
       ],
-      "friendPrivacy": "friends",
-      "desc": "lubie placki"
+      "friendPrivacy": "public",
+      "desc": "lubie placki",
+      "pfp": "/pfps/asd.png"
     }
   ]
 }

@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
@@ -11,7 +12,7 @@ export default function Settings({login,name,pfp}){
     
     return <div className="right-dropdown" id="settings">
         <Link href={`/${login}`}><button>
-            <img src={pfp?`/pfps/${login}.png`:"/blank-pfp.png"} alt="pfp"></img>
+            <img src={pfp} alt="pfp"></img>
             <span>{name}</span>
         </button></Link>
         <button>

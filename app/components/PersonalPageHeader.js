@@ -5,32 +5,33 @@ import MiniPage from "./MiniPage"
 import PageButtons from "./PageButtons"
 import PageEditButton from "./PageEditButton"
 import EditForm from "./EditForm"
+import { getResponse, pfpOrDefault } from "@/public/consts"
 
 export default async function PersonalPageHeader({search,login,loggedLogin}){
     
-    const user = database.users.find(u => u.login==login)
+    const user = (await getResponse(
+            await fetch(`http://localhost:3000/api/users?login=${login}`)
+        )
+    ).users[0]
+
     if (!user) return <div id="not-found-box">
             <h1>Nie znaleziono tego użytkownika</h1>
             <Link href="/"><button>Wróć do strony głównej</button></Link>
         </div>
 
-  
-    const fs = require("fs")
-    const pfp = fs.existsSync(`public/pfps/${login}.png`)?`/pfps/${login}.png`:"/blank-pfp.png"
-    
     const {name, lastname, birthdate, friends, requests, friendPrivacy} = user
+    const pfp = pfpOrDefault(user.pfp)
+    
 
     const birthDateFormatted = Object.keys(birthdate)
         .map(el => birthdate[el].toString().length>1?birthdate[el]:`0${birthdate[el]}`)
         .join(".")
     
-    const loggedLoginInfo = database.users.find(u => u.login==loggedLogin)
+    const loggedLoginInfo = (await getResponse(await fetch(`http://localhost:3000/api/users?login=${loggedLogin}`))).users[0]
 
     const limit = 6
     
-    
-
-    const loggedPfp = fs.existsSync(`public/pfps/${loggedLogin}.png`)?`/pfps/${loggedLogin}.png`:"/blank-pfp.png"
+    const loggedPfp = pfpOrDefault(loggedLoginInfo.pfp)
     
     const getFriendsContainer = () => {
         
@@ -41,12 +42,11 @@ export default async function PersonalPageHeader({search,login,loggedLogin}){
         :database.users.filter(c => friends.filter(u => loggedLoginInfo.friends.includes(u)).includes(c.login))
 
         
-        const friendsInfo = temp
-        .slice(0,limit)
+        const friendsInfo = temp.slice(0,limit)
         .map((u,i) => {  
             return <div className="friend-div" key={i}>
                 <Link href={`/${u.login}`} >
-                    <img className="friend-pfp"  src={fs.existsSync(`public/pfps/${u.login}.png`)?`/pfps/${u.login}.png`:`/blank-pfp.png`}>
+                    <img className="friend-pfp"  src={pfpOrDefault(u.pfp)}>
                     </img>
                 </Link>
                 <MiniPage loggedInfo={({loggedLogin,loggedFriends:loggedLoginInfo.friends,loggedRequests: loggedLogin.requests})} 
@@ -69,8 +69,7 @@ export default async function PersonalPageHeader({search,login,loggedLogin}){
         </>
 
     }
-
-        
+            
         
     return <> <Nav search={search} loggedLogin={loggedLogin}/>
     <div id="personal-page">
@@ -81,8 +80,6 @@ export default async function PersonalPageHeader({search,login,loggedLogin}){
                     <h1>{`${name} ${lastname}`}</h1>
                     <p>Data urodzenia: {birthDateFormatted}</p>
                     {getFriendsContainer()}
-                    {/* {friendsElem}
-                    <div className="friend-pfps-container">{friendsInfo}</div> */}
                 </div>
             </div>
             
@@ -98,7 +95,7 @@ export default async function PersonalPageHeader({search,login,loggedLogin}){
             
         </div>
     </div>
-    <EditForm pfp={loggedPfp} userPrivacy={loggedLoginInfo.privacy} login={loggedLoginInfo.login}></EditForm>
+    <EditForm pfp={loggedPfp} userPrivacy={loggedLoginInfo.friendPrivacy} login={loggedLoginInfo.login}></EditForm>
     </>
   
 }

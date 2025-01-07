@@ -12,9 +12,13 @@ const io = new Server(httpServer, {
 
 
 io.on('connection', async (socket) => {
-  socket.on('hejka', () => {
-    console.log('joł');
-  });
+  socket.on("start", () => {
+    console.log("startd od: " + socket.id)
+  })
+  socket.on("myevent", (msg) => {
+    console.log(socket.id + " wiadomość:", msg)
+    socket.emit("response","dzięki za wiadomość")
+  })
 });
 
 httpServer.listen(5000, () => {
