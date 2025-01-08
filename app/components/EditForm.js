@@ -6,7 +6,6 @@ export default function EditForm({pfp,userPrivacy,login}){
     const editForm = useRef()
     const form = useRef()
     const desc = useRef()
-    console.log(pfp);
     
     const acceptedFileTypes = ["image/png", "image/jpg", "image/jpeg"]
 

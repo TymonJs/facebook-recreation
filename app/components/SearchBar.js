@@ -123,6 +123,7 @@ export default function SearchBar({search="", loggedLogin}){
             onFocus={() => handleFocus(divs)}
             onBlur={() => handleBlur()}
             id="searchUserInput"
+            defaultValue={search}
             ref={input}
             autoComplete="off"
             >

@@ -173,6 +173,14 @@ nav #right img:hover {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  display: none;
+}
+.right-dropdown.active {
+  display: flex;
+}
+.right-dropdown#chat {
+  flex-direction: column;
+  gap: 1rem;
 }
 .right-dropdown#chat input {
   border-radius: 15px;
@@ -910,4 +918,22 @@ nav #right img:hover {
 }
 #edit-form .edits .edit .body input:focus-visible {
   outline: none;
+}
+
+#chat-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+#chat-dropdown .chat {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 15px;
+}
+#chat-dropdown .chat:hover {
+  cursor: pointer;
+  background-color: rgb(58, 58, 58);
 }/*# sourceMappingURL=globals.css.map */

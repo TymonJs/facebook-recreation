@@ -10,7 +10,7 @@ export default function Settings({login,name,pfp}){
         replace("/login")
     }
     
-    return <div className="right-dropdown" id="settings">
+    return <>
         <Link href={`/${login}`}><button>
             <img src={pfp} alt="pfp"></img>
             <span>{name}</span>
@@ -23,5 +23,5 @@ export default function Settings({login,name,pfp}){
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
             <span>Wyloguj się</span>
         </button>
-    </div>
+    </>
 }

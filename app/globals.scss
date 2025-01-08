@@ -182,8 +182,13 @@ nav{
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
+    display: none;
+        &.active{
+            display: flex;
+        }
     &#chat{
+        flex-direction: column;
+        gap: 1rem;
         input{
             border-radius: 15px;
             padding: 0.4rem 0rem 0.4rem 1rem;
@@ -973,5 +978,23 @@ nav{
     
         }
     } 
+    
+}
+#chat-dropdown{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    .chat{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem;
+        border-radius: 15px;
+        &:hover{
+            cursor: pointer;
+            background-color: rgb(58, 58, 58);
+        }
+    }
     
 }

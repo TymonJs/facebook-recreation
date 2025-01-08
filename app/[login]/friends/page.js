@@ -9,7 +9,7 @@ export default async function FriendsPage({params,searchParams}){
     const loggedLogin = head.get("loggedLogin")
     
     return <>
-    <PersonalPageHeader search={search} login={decodeURIComponent(login)} loggedLogin={loggedLogin}></PersonalPageHeader>
+    <PersonalPageHeader search={search} login={decodeURIComponent(login)} loggedLogin={loggedLogin} chatSearch={chat}></PersonalPageHeader>
     {/* <Friends></Friends> */}
     </>
 }

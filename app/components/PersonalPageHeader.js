@@ -7,7 +7,7 @@ import PageEditButton from "./PageEditButton"
 import EditForm from "./EditForm"
 import { getResponse, pfpOrDefault } from "@/public/consts"
 
-export default async function PersonalPageHeader({search,login,loggedLogin}){
+export default async function PersonalPageHeader({search,login,loggedLogin,chatSearch=""}){
     
     const user = (await getResponse(
             await fetch(`http://localhost:3000/api/users?login=${login}`)
@@ -71,7 +71,7 @@ export default async function PersonalPageHeader({search,login,loggedLogin}){
     }
             
         
-    return <> <Nav search={search} loggedLogin={loggedLogin}/>
+    return <> <Nav search={search} loggedLogin={loggedLogin} chatSearch={chatSearch}/>
     <div id="personal-page">
         <div id="info-header">
             <div className="info">

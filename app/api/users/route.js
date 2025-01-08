@@ -8,7 +8,6 @@ export async function GET(req){
     
     const users = database.users.reduce((acc,u) => {
         if (keys.every(key => {
-            if (u.login=="kamil") console.log("kamil")
             if (["birthday","birthmonth","birthyear"].includes(key)) return u.birthdate[key.replace("birth","")]==searchParams.get(key)
             else if (["friends","requests"].includes(key)) return u[key].includes(searchParams.get(key))
             else if (key === "search") return `${u.name} ${u.lastname}`.toLowerCase().includes(searchParams.get(key))
@@ -17,7 +16,6 @@ export async function GET(req){
         })) return [...acc,u]
         return acc
     },[])
-    console.log()
     
     return NextResponse.json({users})
 }
