@@ -4,43 +4,60 @@ import {io} from "socket.io-client"
 import { getResponse,pfpOrDefault } from "@/public/consts"
 import ChatSearch from "./ChatSearch"
 import { useParams } from "next/navigation"
+import Link from "next/link"
 
-export default function Chat({loggedLogin,chatSearch}) {
+export default function Chat({loggedLogin,chatSearch,active,messenger,chattingWith}) {
   // const socket = io("http://localhost:5000")
   const [chats,setChats] = useState(null)
   
+  const openMessenger = (login) => {
+    messenger.current.classList.add("active")
+    chattingWith.current = login
+  }
+
   useEffect(() => {
     const search = chatSearch?`?to=${chatSearch}`:""
+
     fetch(`${window.location.origin}/api/chat/${loggedLogin}${search}`,{method:"GET"}).then(res => {
       getResponse(res).then(r => {
-        if (!r || r?.length===0) return () => {}
-        const toStore = []
+        
+        if (!r || r.chats?.length===0 ){
+          return () => {}
+        }
         Promise.all(r.chats.map((c,i) => {
+
           const friendLogin = c.users.find(e => e!==loggedLogin)
+
           return new Promise((res) => {
             fetch(`${window.location.origin}/api/users?login=${friendLogin}`).then(res2 => {
               getResponse(res2).then(r2 => {
+
                 const {name,lastname, pfp=null} = r2.users[0]    
                 const image =  pfpOrDefault(pfp)           
-                toStore.push({name,lastname,image,login:friendLogin})
-                res(<div key={i} className="chat">
-                  <img className="pfp-mini" src={image}></img>
-                  {`${name} ${lastname}`}
-              </div>)
+                const message = c.messages[0]
+                const text = message
+                  ?`${message.by==loggedLogin?"Ty":`${friendLogin}`}: ${message.text}`
+                  :"Powiedz coś od siebie"
+                res(<div key={i} className="chat" onClick={() => openMessenger(friendLogin)}>
+                  <Link href={`/${friendLogin}`}><img className="pfp-mini" src={image}></img></Link>
+                  <div className="text">
+                    <h3>{`${friendLogin}`}</h3>
+                    <p>{text}</p>
+                  </div>
+                </div>)
               })
               
             })    
           })
         }))
         .then(d => {
-          // localStorage.setItem("chat",JSON.stringify({chat: toStore}))  
           setChats(d)
         })
         
         
       })
     })
-  },[chatSearch])
+  },[chatSearch,active])
 
 
   // useEffect(() => {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "@/data/database.json"
 
-// GET - login
+// GET - return user
 // POST - register
 // PATCH - edit profile
 // DELETE - rm account

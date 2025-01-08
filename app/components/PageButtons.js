@@ -73,10 +73,13 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
     
     const [inviteButton,setInviteButton] = useState(getInviteButton())
    
-
+    const startChat = () => {
+        fetch(`${window.location.origin}/api/chat/${loggedLoginInfo.login}/${login}`,{method: "POST"})
+    }
+    
     return <>
         {inviteButton}
-        <button><i className="fa-brands fa-facebook-messenger"></i> Wyślij wiadomość</button>
+        <button onClick={startChat}><i className="fa-brands fa-facebook-messenger" ></i> Wyślij wiadomość</button>
     
     </>
 }

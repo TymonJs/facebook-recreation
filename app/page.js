@@ -14,5 +14,5 @@ export default async function Home({searchParams}){
       <h1>Socket.io</h1>
     </div>
 
-    </div>)
+  </div>)
 }

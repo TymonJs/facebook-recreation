@@ -19,7 +19,7 @@ export default async function PersonalPageHeader({search,login,loggedLogin,chatS
             <Link href="/"><button>Wróć do strony głównej</button></Link>
         </div>
 
-    const {name, lastname, birthdate, friends, requests, friendPrivacy} = user
+    const {name, lastname, birthdate, friends, requests, friendPrivacy, desc = ""} = user
     const pfp = pfpOrDefault(user.pfp)
     
 
@@ -78,7 +78,9 @@ export default async function PersonalPageHeader({search,login,loggedLogin,chatS
                 <img src={`${pfp}`} id="pfp"></img>
                 <div className="text">
                     <h1>{`${name} ${lastname}`}</h1>
+                    <p>#{login}</p>
                     <p>Data urodzenia: {birthDateFormatted}</p>
+                    {desc?<p>"{desc}"</p>:null}
                     {getFriendsContainer()}
                 </div>
             </div>

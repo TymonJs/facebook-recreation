@@ -3,14 +3,25 @@ import { useEffect, useMemo, useState, useRef} from "react"
 import Chat from "./Chat"
 import Settings from "./Settings"
 import { getResponse, pfpOrDefault } from "@/public/consts"
+import Messenger from "./Messenger"
 
 export default function Right({loggedLogin,chatSearch}){
     const [name,setName] = useState(null)
     const [pfp, setPfp] = useState(`/pfps/${loggedLogin}.png`)
     const [active,setActive] = useState(chatSearch?"chat":null)
-    
+
+    const messenger = useRef()
+    const chattingWith = useRef("")
+
     const closeActive = (e) => {
-        if (active && !document.getElementById("right").contains(e.target)) setActive("")
+        const right = document.getElementById("right")
+        const dropdown = document.getElementById("chat-dropdown")
+        
+        if (active && (messenger.current.contains(e.target)|| !right.contains(e.target) || dropdown.contains(e.target))) {
+            setTimeout(() => {
+                setActive("")     
+            }, 100);
+        }
     }
 
     useEffect(() => {
@@ -73,11 +84,16 @@ export default function Right({loggedLogin,chatSearch}){
         <i className="fa-solid fa-bell"></i>
         {image}
         <div id="chat" className={`right-dropdown${active=="chat"?" active":""}`}>
-            <Chat loggedLogin={loggedLogin} chatSearch={chatSearch}/>
+            <Chat loggedLogin={loggedLogin} chatSearch={chatSearch} active={active} messenger={messenger} chattingWith={chattingWith}/>
         </div>
         <div className={`right-dropdown${active=="settings"?" active":""}`} id="settings">
             <Settings login={loggedLogin} name={name} pfp={pfp}/>
         </div>
+        <div ref={messenger} id="messenger">
+            <Messenger selfRef={messenger} friendLogin={chattingWith}></Messenger>
+
+        </div>
+
     </div>
     </>
 }

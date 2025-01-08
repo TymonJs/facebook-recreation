@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 import chats from "@/data/chats.json"
+import { getResponse } from "@/public/consts";
+
 // GET - zwraca mój czat
 // POST - stworzenie czatu
 // DELETE - usunięcie czatu
 // ?PATCH - zmiana danych np. nazwa czatu, nicki na czacie
 
-export function GET(req){
-    const searchParams = new URL(req.url).searchParams
-    const u1 = searchParams.get("user1")
-    const u2 = searchParams.get("user2")
+export async function GET(req){
+    const temp = req.nextUrl.href.split("/").slice(5)
+    
+    const [u1, u2] = temp
 
     if (!(u1&&u2)) return NextResponse.json({msg:"Incorrect request"},{status:400})
     
@@ -20,8 +22,9 @@ export function GET(req){
 }
 
 export async function POST(req){
-    const json = await new Response(req.body).json()
-    const {user1="", user2=""} = json
+    const temp = req.nextUrl.href.split("/").slice(5)
+    
+    const [user1, user2] = temp.map(el => decodeURIComponent(el))
 
     if (!(user1 && user2)) return NextResponse.json({msg: "Incorrect request"},{status:400})
     
@@ -46,8 +49,8 @@ export async function POST(req){
 }
 
 export async function DELETE(req){
-    const json = await new Response(req.body).json()
-    const {user1="", user2=""} = json
+    const temp = req.nextUrl.href.split("/").slice(5)
+    const [user1, user2] = temp
 
     if (!(user1 && user2)) return NextResponse.json({msg: "Incorrect request"},{status:400})
     
