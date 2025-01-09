@@ -1,23 +1,80 @@
+'use client'
 import Nav from "./Nav"
-import database from "@/data/database.json"
 import Link from "next/link"
 import MiniPage from "./MiniPage"
 import PageButtons from "./PageButtons"
 import PageEditButton from "./PageEditButton"
 import EditForm from "./EditForm"
 import { getResponse, pfpOrDefault } from "@/public/consts"
+import { useState, useEffect, useRef } from "react"
 
-export default async function PersonalPageHeader({search,login,loggedLogin,chatSearch=""}){
-    
-    const user = (await getResponse(
-            await fetch(`http://localhost:3000/api/users?login=${login}`)
-        )
-    ).users[0]
+export default function PersonalPageHeader({search,login,loggedLogin,chatSearch=""}){
+    const [user,setUser] = useState(null)
+    const [loggedLoginInfo,setLoggedLoginInfo] = useState()
+    const [friendContainer,setFriendContainer] = useState()
+    const [chattingWith,setChattingWith] = useState("")
 
-    if (!user) return <div id="not-found-box">
+    useEffect(() => {
+        fetch(`${window.location.origin}/api/user/${login}`).then(r => {
+            getResponse(r).then(res => {
+                setUser(res?.user)
+            })
+        })
+    },[])
+
+    useEffect(() => {
+        fetch(`${window.location.origin}/api/user/${loggedLogin}`).then(r => {
+            getResponse(r).then(res => {
+                setLoggedLoginInfo(res?.user)
+            })
+        })
+    },[])
+
+    useEffect(() => {
+        
+        if ((!user || !loggedLoginInfo) ||(login!==loggedLogin && (friendPrivacy==="private"||(friendPrivacy=="friends" && !friends.includes(loggedLogin))))) return
+        
+        const fetchMutual = loggedLogin===login?"":`/${loggedLogin}`
+        fetch(`${window.location.origin}/api/friend/${login}${fetchMutual}`).then(r => {
+            getResponse(r).then(temp => {                
+                const friendsInfo = temp.friends.slice(0,limit)
+                .map((u,i) => {  
+                    return <div className="friend-div" key={i}>
+                        <Link href={`/${u.login}`} >
+                            <img className="friend-pfp"  src={pfpOrDefault(u.pfp)}>
+                            </img>
+                        </Link>
+                        <MiniPage loggedInfo={({loggedLogin,loggedFriends:loggedLoginInfo.friends,loggedRequests: loggedLogin.requests})} 
+                            hoverInfo={({name:u.name,lastname:u.lastname,login:u.login,friends:u.friends,requests:u.requests})}
+                            chattingWith={setChattingWith}>
+                        </MiniPage>
+                    </div>
+                    
+                })
+
+                
+                const out = <><Link href={`/friends/${login}`}>
+                        <p className="friend-count"><span>{friends?friends.length:"Brak"} znajomych</span>
+                            {loggedLogin!=login
+                            ?<><i className="fa-solid fa-circle"></i>
+                            <span>{`${friends.filter(u => loggedLoginInfo.friends.includes(u)).length} Wspólnych  znajomych`}</span></>
+                            :null}
+                        </p>
+                    </Link>
+                    <div className="friend-pfps-container">{friendsInfo}</div>
+                </>
+                
+                setFriendContainer(out)
+            })
+         })
+    },[user,loggedLoginInfo])
+
+    if (user===undefined) return <div id="not-found-box">
             <h1>Nie znaleziono tego użytkownika</h1>
             <Link href="/"><button>Wróć do strony głównej</button></Link>
         </div>
+
+    if (user===null) return
 
     const {name, lastname, birthdate, friends, requests, friendPrivacy, desc = ""} = user
     const pfp = pfpOrDefault(user.pfp)
@@ -26,52 +83,16 @@ export default async function PersonalPageHeader({search,login,loggedLogin,chatS
     const birthDateFormatted = Object.keys(birthdate)
         .map(el => birthdate[el].toString().length>1?birthdate[el]:`0${birthdate[el]}`)
         .join(".")
+
     
-    const loggedLoginInfo = (await getResponse(await fetch(`http://localhost:3000/api/users?login=${loggedLogin}`))).users[0]
+
+    if (!loggedLoginInfo) return
 
     const limit = 6
     
-    const loggedPfp = pfpOrDefault(loggedLoginInfo.pfp)
-    
-    const getFriendsContainer = () => {
+    const loggedPfp = pfpOrDefault(loggedLoginInfo.pfp) 
         
-        if (login!==loggedLogin && (friendPrivacy==="private"||(friendPrivacy=="friends" && !friends.includes(loggedLogin)))) return null
-
-        const temp = loggedLogin==login
-        ?database.users.filter(u => loggedLoginInfo.friends.includes(u.login))
-        :database.users.filter(c => friends.filter(u => loggedLoginInfo.friends.includes(u)).includes(c.login))
-
-        
-        const friendsInfo = temp.slice(0,limit)
-        .map((u,i) => {  
-            return <div className="friend-div" key={i}>
-                <Link href={`/${u.login}`} >
-                    <img className="friend-pfp"  src={pfpOrDefault(u.pfp)}>
-                    </img>
-                </Link>
-                <MiniPage loggedInfo={({loggedLogin,loggedFriends:loggedLoginInfo.friends,loggedRequests: loggedLogin.requests})} 
-                    hoverInfo={({name:u.name,lastname:u.lastname,login:u.login,friends:u.friends,requests:u.requests})}>
-                </MiniPage>
-            </div>
-            
-        })
-
-        return <>
-            <Link href={`/friends/${login}`}>
-                <p className="friend-count"><span>{friends?friends.length:"Brak"} znajomych</span>
-                    {loggedLogin!=login
-                    ?<><i className="fa-solid fa-circle"></i>
-                    <span>{`${friends.filter(u => loggedLoginInfo.friends.includes(u)).length} Wspólnych  znajomych`}</span></>
-                    :null}
-                </p>
-            </Link>
-            <div className="friend-pfps-container">{friendsInfo}</div>
-        </>
-
-    }
-            
-        
-    return <> <Nav search={search} loggedLogin={loggedLogin} chatSearch={chatSearch}/>
+    return <> <Nav search={search} loggedLogin={loggedLogin} chatSearch={chatSearch} chattingWith={chattingWith} setChattingWith={setChattingWith}/>
     <div id="personal-page">
         <div id="info-header">
             <div className="info">
@@ -81,7 +102,7 @@ export default async function PersonalPageHeader({search,login,loggedLogin,chatS
                     <p>@{login}</p>
                     <p>Data urodzenia: {birthDateFormatted}</p>
                     {desc?<p>"{desc}"</p>:null}
-                    {getFriendsContainer()}
+                    {friendContainer}
                 </div>
             </div>
             
@@ -89,8 +110,10 @@ export default async function PersonalPageHeader({search,login,loggedLogin,chatS
             ?<PageEditButton></PageEditButton>
             :<div className="buttons">
                 <PageButtons 
-                user={({friends,requests,login})}
-                loggedLoginInfo={({friends:loggedLoginInfo.friends,login:loggedLogin,requests:loggedLogin.requests})}>
+                user={({friends,requests,login,image:pfpOrDefault(user.pfp),name,lastname})}
+                loggedLoginInfo={({friends:loggedLoginInfo.friends,login:loggedLogin,requests:loggedLogin.requests})}
+                setChattingWith={setChattingWith}>
+            
                 </PageButtons>
             </div>}
             

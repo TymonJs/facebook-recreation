@@ -9,15 +9,20 @@ const io = new Server(httpServer, {
   }
 })
 
+const getRoomName = (arr) => {
+  return arr.sort().toString()
+}
 
-
-io.on('connection', async (socket) => {
-  socket.on("start", () => {
-    console.log("startd od: " + socket.id)
+io.on('connection', async (socket) => {  
+  socket.on("connected",(arr) => {
+    socket.join(getRoomName(arr))
   })
-  socket.on("myevent", (msg) => {
-    console.log(socket.id + " wiadomość:", msg)
-    socket.emit("response","dzięki za wiadomość")
+  socket.on("message",(obj) => {
+    const {from,to,text} = obj
+    console.log(`wysyłam wiadomość od ${from}, text: ${text} do ${getRoomName([from,to])}`);
+    
+    io.to(getRoomName([from,to])).emit("message",obj)
+    
   })
 });
 

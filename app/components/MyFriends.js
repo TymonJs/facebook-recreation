@@ -2,7 +2,7 @@ import database from "@/data/database.json"
 import Link from "next/link"
 import PageButtons from "./PageButtons"
 
-export default function MyFriends({loggedLogin,invites=false,active}){
+export default function MyFriends({loggedLogin,invites=false,activeBar}){
     const loggedUser = database.users.find(u => u.login===loggedLogin)
     
     const getFriendsFriendsInfo = (friends) => {
@@ -60,13 +60,13 @@ export default function MyFriends({loggedLogin,invites=false,active}){
         <div className="choice-bar">
             <h1>Znajomi</h1>
             <div className="bar-buttons">
-                {active==""
+                {activeBar==""
                     ?<button className="active"><i className="fa-solid fa-user-group"></i><span>Strona główna</span></button>
                     :<Link href="/friends"><button><i className="fa-solid fa-user-group"></i><span>Strona główna</span></button></Link>
                 }
 
                 <Link href={`${loggedLogin}/friends`}><button><i className="fa-solid fa-list-ul"></i><span>Wszyscy znajomi</span></button></Link>
-                {active=="requests"
+                {activeBar=="requests"
                     ?<button className="active"><i className="fa-solid fa-envelope-circle-check"></i><span>Zaproszenia do grona znajomych</span></button>
                     :<Link href="friends/requests"><button><i className="fa-solid fa-envelope-circle-check"></i><span>Zaproszenia do grona znajomych</span></button></Link>
                 }

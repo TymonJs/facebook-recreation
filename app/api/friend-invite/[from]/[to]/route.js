@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import database from "@/data/database.json"
-export async function POST(req){
-    
-    const json = await new Response(req.body).json()
-    const fromLogin = json.from
-    const toLogin = json.to
-    
 
+export async function POST(req){
+    const temp = req.nextUrl.pathname.split("/")
+    const [fromLogin,toLogin] = temp.slice(temp.length-2).map(el => decodeURIComponent(el))
+    
     if (fromLogin == toLogin) return NextResponse.json({msg: "Nie można wysyłać zaproszenia do samego siebie"},{status: 400})
 
     const users = database.users
@@ -65,9 +63,8 @@ export async function POST(req){
     
 }
 export async function DELETE(req){
-    const json = await new Response(req.body).json()
-    const fromLogin = json.from
-    const toLogin = json.to
+    const temp = req.nextUrl.pathname.split("/")
+    const [fromLogin,toLogin] = temp.slice(temp.length-2).map(el => decodeURIComponent(el))
 
     if (fromLogin == toLogin) return NextResponse.json({msg: "Nie można usunąć ze znajomych samego siebie"},{status: 400})
 
@@ -119,9 +116,8 @@ export async function DELETE(req){
 }
 
 export async function PATCH(req){
-    const json = await new Response(req.body).json()
-    const fromLogin = json.from
-    const toLogin = json.to
+    const temp = req.nextUrl.pathname.split("/")
+    const [fromLogin,toLogin] = temp.slice(temp.length-2).map(el => decodeURIComponent(el))
 
     let from;
     let to;

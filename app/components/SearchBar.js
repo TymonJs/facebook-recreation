@@ -15,7 +15,7 @@ export default function SearchBar({search="", loggedLogin}){
 
     useEffect(() => {
         if (search) {
-            fetch(`http://localhost:3000/api/users?search=${search}`,{
+            fetch(`http://localhost:3000/api/user?search=${search}`,{
                 method: "GET"
             })
             .then(res => {

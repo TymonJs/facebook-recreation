@@ -5,13 +5,12 @@ import Settings from "./Settings"
 import { getResponse, pfpOrDefault } from "@/public/consts"
 import Messenger from "./Messenger"
 
-export default function Right({loggedLogin,chatSearch}){
+export default function Right({loggedLogin,chatSearch,chattingWith, setChattingWith}){
     const [name,setName] = useState(null)
     const [pfp, setPfp] = useState(`/pfps/${loggedLogin}.png`)
     const [active,setActive] = useState(chatSearch?"chat":null)
 
     const messenger = useRef()
-    const chattingWith = useRef("")
 
     const closeActive = (e) => {
         const right = document.getElementById("right")
@@ -30,7 +29,7 @@ export default function Right({loggedLogin,chatSearch}){
         const p = localStorage.getItem("pfp")
         if (p) setPfp(p)
 
-        fetch(`http://localhost:3000/api/users?login=${loggedLogin}`,{method:"GET"})
+        fetch(`http://localhost:3000/api/user?login=${loggedLogin}`,{method:"GET"})
         .then(res => {
             if (res.ok){
                 getResponse(res)
@@ -76,7 +75,7 @@ export default function Right({loggedLogin,chatSearch}){
     }
     
     const image = <img src={pfp} alt='pfp' onClick={toggleSettings}></img>
-    
+    // const cw = chattingWith==undefined?useRef(""):chattingWith
     return <>
     <div id="right">
         <i className="fa-solid fa-bars"></i>
@@ -84,7 +83,7 @@ export default function Right({loggedLogin,chatSearch}){
         <i className="fa-solid fa-bell"></i>
         {image}
         <div id="chat" className={`right-dropdown${active=="chat"?" active":""}`}>
-            <Chat loggedLogin={loggedLogin} chatSearch={chatSearch} active={active} messenger={messenger} chattingWith={chattingWith}/>
+            <Chat loggedLogin={loggedLogin} chatSearch={chatSearch} active={active} messenger={messenger} setChattingWith={setChattingWith}/>
         </div>
         <div className={`right-dropdown${active=="settings"?" active":""}`} id="settings">
             <Settings login={loggedLogin} name={name} pfp={pfp}/>

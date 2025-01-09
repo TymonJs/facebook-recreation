@@ -2,8 +2,8 @@
 
 import { useState} from "react";
 
-export default function PageButtons({user, loggedLoginInfo,req=false}){
-    const {login,requests,friends} = user
+export default function PageButtons({user, loggedLoginInfo,req=false,setChattingWith}){
+    const {login,requests} = user
     
     const friendsButton = () => <button onClick={unFriend}><i className="fa-solid fa-check"></i><span> Znajomi</span></button>
     const invSentButton = () => <button onClick={updateFriend}><i className="fa-solid fa-paper-plane"></i><span> Zaproszenie Wysłane</span></button>
@@ -18,12 +18,8 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
     }
 
     const unFriend = (e) => {
-        fetch("/api/friend",{
-            method:"DELETE",
-            body: JSON.stringify({
-                from: loggedLoginInfo.login,
-                to: login
-            })
+        fetch(`/api/friend-invite/${loggedLoginInfo.login}/${login}`,{
+            method:"DELETE"
         })
         .then(res => {
             if (res.ok && res.status==200 && !req){
@@ -34,12 +30,8 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
     }
     
     const addFriend = (e) => {
-        fetch("/api/friend",{
-            method:"POST",
-            body:JSON.stringify({
-                from: loggedLoginInfo.login,
-                to: login
-            })
+        fetch(`/api/friend-invite/${loggedLoginInfo.login}/${login}`,{
+            method:"POST"
         })
         .then(res => {
             if (res.ok && !req){
@@ -57,12 +49,8 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
     }
 
     const updateFriend = () => {
-        fetch("/api/friend", {
-            method: "PATCH",
-            body: JSON.stringify({
-                from: loggedLoginInfo.login,
-                to: login 
-            })
+        fetch(`/api/friend-invite/${loggedLoginInfo.login}/${login}`,{
+            method: "PATCH"
         })
         .then(res => {
             if (res.ok && res.status==200 && !req) setInviteButton(addFriendButton())
@@ -75,12 +63,12 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
    
     const startChat = () => {
         fetch(`${window.location.origin}/api/chat/${loggedLoginInfo.login}/${login}`,{method: "POST"}).then(r =>{
-            if (r.ok){
-                const ch = document.getElementById("chat")
-                if (!ch.classList.contains("active")) ch.classList.add("active")
-            }
-        })
-        
+            console.log(setChattingWith);
+            
+            setChattingWith(user)
+
+            
+        })     
     }
     
     return <>

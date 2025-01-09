@@ -1,17 +1,18 @@
+'use client'
 import PageButtons from "./PageButtons"
+import { pfpOrDefault } from "@/public/consts"
 
-export default function MiniPage({loggedInfo,hoverInfo}){
-    const {name, lastname, friends, login,requests} = hoverInfo
-    const fs = require("fs")
+export default function MiniPage({loggedInfo,hoverInfo,chattingWith}){
+    const {name, lastname, friends, login,requests,pfp=""} = hoverInfo
     const {loggedFriends, loggedLogin,loggedRequests} = loggedInfo
-    const pfp = fs.existsSync(`public/pfps/${login}.png`)?`/pfps/${login}.png`:"/blank-pfp.png"
+    const image = pfpOrDefault(pfp)
     
     const mutualFriends = loggedFriends.filter(u => friends.includes(u))
     
     return <>
         <div className="mini-page">
             <div className="mini-body">
-                <img src={pfp}></img>
+                <img src={image}></img>
                 <div className="mini-info">
                     <h1>{`${name} ${lastname}`}</h1>
                     <p>Wspólni znajomi: {mutualFriends.length}</p>
@@ -19,8 +20,9 @@ export default function MiniPage({loggedInfo,hoverInfo}){
             </div>
             
             <div className="buttons">
-                    <PageButtons user={({friends,requests,login})}
-                    loggedLoginInfo={({friends:loggedFriends,requests:loggedRequests,login:loggedLogin})}>
+                    <PageButtons user={({friends,requests,login,image,name,lastname})}
+                    loggedLoginInfo={({friends:loggedFriends,requests:loggedRequests,login:loggedLogin})}
+                    chattingWith={chattingWith}>
                     </PageButtons>
             </div>
         </div>
