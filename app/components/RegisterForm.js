@@ -162,7 +162,7 @@ export default function Form(){
                     </label>
                 </div>
                 <input id="login-input" placeholder="Login"></input>
-                <input id="password-input" placeholder="Hasło"></input>
+                <input type="password" id="password-input" placeholder="Hasło"></input>
                 <button onClick={handleClick}>Zarejestruj się</button>
                 <Link href="/login">Masz już konto?</Link>
             </div>

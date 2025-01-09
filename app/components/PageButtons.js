@@ -74,12 +74,18 @@ export default function PageButtons({user, loggedLoginInfo,req=false}){
     const [inviteButton,setInviteButton] = useState(getInviteButton())
    
     const startChat = () => {
-        fetch(`${window.location.origin}/api/chat/${loggedLoginInfo.login}/${login}`,{method: "POST"})
+        fetch(`${window.location.origin}/api/chat/${loggedLoginInfo.login}/${login}`,{method: "POST"}).then(r =>{
+            if (r.ok){
+                const ch = document.getElementById("chat")
+                if (!ch.classList.contains("active")) ch.classList.add("active")
+            }
+        })
+        
     }
     
     return <>
         {inviteButton}
-        <button onClick={startChat}><i className="fa-brands fa-facebook-messenger" ></i> Wyślij wiadomość</button>
+        <button onClick={startChat}><i className="fa-brands fa-facebook-messenger" ></i> Rozpocznij czat</button>
     
     </>
 }

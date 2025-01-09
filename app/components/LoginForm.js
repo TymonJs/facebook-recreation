@@ -92,11 +92,11 @@ export default function LoginForm(){
             {warning?<h4 id="warning">{warning}</h4>:null}
             <div id="interactives">
                 <input name="login" placeholder="Login"></input>
-                <input name="password" placeholder="Hasło"></input>
+                <input type="password" name="password" placeholder="Hasło"></input>
                 <button id="login_button" onClick={handleClick}>Zaloguj się</button>
             </div>
             
-            <Link id="register" href="/register" prefetch={false}>Utwórz nowe konto</Link>
+            <Link id="register" href="/register">Utwórz nowe konto</Link>
         </div>
     </div>
 }

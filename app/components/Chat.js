@@ -10,9 +10,9 @@ export default function Chat({loggedLogin,chatSearch,active,messenger,chattingWi
   // const socket = io("http://localhost:5000")
   const [chats,setChats] = useState(null)
   
-  const openMessenger = (login) => {
-    messenger.current.classList.add("active")
-    chattingWith.current = login
+  const openMessenger = (data) => {
+    if (!messenger.current.classList.contains("active")) messenger.current.classList.add("active")
+    chattingWith.current = data
   }
 
   useEffect(() => {
@@ -38,8 +38,8 @@ export default function Chat({loggedLogin,chatSearch,active,messenger,chattingWi
                 const text = message
                   ?`${message.by==loggedLogin?"Ty":`${friendLogin}`}: ${message.text}`
                   :"Powiedz coś od siebie"
-                res(<div key={i} className="chat" onClick={() => openMessenger(friendLogin)}>
-                  <Link href={`/${friendLogin}`}><img className="pfp-mini" src={image}></img></Link>
+                res(<div key={i} className="chat" onClick={() => openMessenger({name,lastname,image,login: friendLogin})}>
+                  <img className="pfp-mini" src={image}></img>
                   <div className="text">
                     <h3>{`${friendLogin}`}</h3>
                     <p>{text}</p>

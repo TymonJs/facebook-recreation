@@ -90,7 +90,7 @@ export default function Right({loggedLogin,chatSearch}){
             <Settings login={loggedLogin} name={name} pfp={pfp}/>
         </div>
         <div ref={messenger} id="messenger">
-            <Messenger selfRef={messenger} friendLogin={chattingWith}></Messenger>
+            <Messenger selfRef={messenger} friend={chattingWith} loggedLogin={loggedLogin}></Messenger>
 
         </div>
 

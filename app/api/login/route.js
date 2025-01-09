@@ -31,7 +31,7 @@ export async function POST(request){
                 return NextResponse.json({success:true, serverSessionProof: serverSession.proof})
             }
             catch{
-                return NextResponse.json({success:false,msg:"Wrong password"})
+                return NextResponse.json({success:false,msg:"Hasło jest niepoprawne"})
             }
             
             
@@ -43,7 +43,7 @@ export async function POST(request){
         const {login,clientEphemeralPublic} = json
         const user = prev.users.find(u => u.login===login)
         
-        if (!user) return NextResponse.json({success:false,msg:"This login isn't registered"})
+        if (!user) return NextResponse.json({success:false,msg:"Ten login jest niezarejestrowany"})
 
         const {salt,verifier} = user
         const serverEphemeral = srp.generateEphemeral(verifier)
@@ -80,7 +80,7 @@ export async function POST(request){
     catch (e){
         console.log(e);
         
-        return NextResponse.json({success: false ,msg: "Provide a valid json with your login and password"})
+        return NextResponse.json({success: false ,msg: "Dane są nieprawidłowe"})
     }
     
 }

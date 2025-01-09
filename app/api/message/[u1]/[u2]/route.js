@@ -7,21 +7,22 @@ import chats from "@/data/chats.json"
 // PATCH - edytuje wiadomość
 
 export async function GET(req){
-    const url = new URL(req.url)
+    const users = req.nextUrl.pathname.split("/").slice(3).map(el => decodeURIComponent(el))
     
-    const searchParams = url.searchParams
-    const origin = url.origin
+    const u1 = users[0]
+    const u2 = users[1]
+    const origin = req.nextUrl.origin
 
-    const u1 = searchParams.get("user1")
-    const u2 = searchParams.get("user2")
-
-    const chat = await getResponse(await fetch(`${origin}/api/chat?user1=${u1}&user2=${u2}`,{method:"GET"}))
+    const chat = await getResponse(await fetch(`${origin}/api/chat/${u1}/${u2}`,{method:"GET"}))
     if (!chat) return NextResponse.json({msg:"Chat not found"},{status:400})
     
+    const searchParams = new URL(req.url).searchParams
     const by = searchParams.get("by")
     const text = searchParams.get("text")
 
-    if (!(by && text)) return NextResponse.json({msg:"Text or by param not given"},{status:400})
+    
+    
+    if (!(by && text)) return NextResponse.json({messages: chat.messages})
     
     const found = chat.messages.find(m => m.by==by&&m.text==text)
 
@@ -32,9 +33,13 @@ export async function GET(req){
 }
 
 export async function POST(req){
+    const users = req.nextUrl.pathname.split("/").slice(3).map(el => decodeURIComponent(el))
+    const user1 = users[0]
+    const user2 = users[1]
+    
     const json = await new Response(req.body).json()
 
-    const {user1="", user2="", by ="",text=""} = json
+    const {by ="",text=""} = json
 
     if (!(user1 && user2 && by && text)) return NextResponse.json({msg:"Wrong params"},{status:400})
 

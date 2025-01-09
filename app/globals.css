@@ -932,7 +932,7 @@ nav #right img:hover {
   z-index: 2;
 }
 #chat-dropdown::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 #chat-dropdown::-webkit-scrollbar-track {
   background: #252728;
@@ -952,6 +952,7 @@ nav #right img:hover {
   gap: 1rem;
   padding: 0.5rem;
   border-radius: 15px;
+  margin-right: 0.5rem;
   position: relative;
 }
 #chat-dropdown .chat img {
@@ -967,7 +968,7 @@ nav #right img:hover {
   font-size: 0.9rem;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 12vw;
+  max-width: 12vw;
   overflow: hidden;
   color: rgb(163, 163, 163);
 }
@@ -988,8 +989,8 @@ nav #right img:hover {
   box-shadow: rgb(0, 0, 0) 0px 0px 10px -5px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  width: 20rem;
-  height: 25rem;
+  width: 22rem;
+  height: 30rem;
   z-index: 1;
   padding-bottom: 0.5rem;
 }
@@ -1046,6 +1047,7 @@ nav #right img:hover {
   padding: 1rem 1rem;
   overflow-y: auto;
   overflow-x: hidden;
+  flex: 1;
 }
 #messenger .body .message {
   padding: 0.35rem 1rem;
@@ -1053,6 +1055,9 @@ nav #right img:hover {
   overflow-wrap: break-word;
   max-width: 90%;
   border-radius: 15px;
+}
+#messenger .body .message.spaced {
+  margin-bottom: 1rem;
 }
 #messenger .body .me {
   background-color: rgb(35, 50, 192);

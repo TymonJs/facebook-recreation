@@ -78,7 +78,7 @@ export default async function PersonalPageHeader({search,login,loggedLogin,chatS
                 <img src={`${pfp}`} id="pfp"></img>
                 <div className="text">
                     <h1>{`${name} ${lastname}`}</h1>
-                    <p>#{login}</p>
+                    <p>@{login}</p>
                     <p>Data urodzenia: {birthDateFormatted}</p>
                     {desc?<p>"{desc}"</p>:null}
                     {getFriendsContainer()}

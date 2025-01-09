@@ -992,7 +992,7 @@ nav{
     overflow-y: auto;
     z-index: 2;
     &::-webkit-scrollbar {
-        width: 12px;
+        width: 8px;
     }
 
     
@@ -1016,6 +1016,7 @@ nav{
         gap: 1rem;
         padding: 0.5rem;
         border-radius: 15px;
+        margin-right: 0.5rem;
         position: relative;
         img{
             width: 3rem;
@@ -1030,7 +1031,7 @@ nav{
                 font-size: 0.9rem;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                width: 12vw;
+                max-width: 12vw;
                 overflow: hidden;
                 color: rgb(163, 163, 163);
             }
@@ -1054,8 +1055,8 @@ nav{
     box-shadow: rgb(0, 0, 0) 0px 0px 10px -5px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 20rem;
-    height: 25rem;
+    width: 22rem;
+    height: 30rem;
     z-index: 1;
     padding-bottom: 0.5rem;
 
@@ -1114,20 +1115,29 @@ nav{
         padding: 1rem 1rem;
         overflow-y: auto;
         overflow-x: hidden;
+        flex: 1;
         .message{
             padding: 0.35rem 1rem;
             word-wrap: break-word;
             overflow-wrap: break-word;
             max-width: 90%;
             border-radius: 15px;
+            &.spaced{
+                margin-bottom: 1rem;
+            }
         }
         .me{
             background-color: rgb(35, 50, 192);
             align-self: flex-end;
+            
         }
         .you{
             align-self: flex-start;
             background-color: rgb(56, 56, 56);
+            
+            // & ~ .me{
+            //     margin: 0.5rem 0;
+            // }
 
         }
         &::-webkit-scrollbar {

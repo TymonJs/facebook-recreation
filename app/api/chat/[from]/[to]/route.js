@@ -8,7 +8,7 @@ import { getResponse } from "@/public/consts";
 // ?PATCH - zmiana danych np. nazwa czatu, nicki na czacie
 
 export async function GET(req){
-    const temp = req.nextUrl.href.split("/").slice(5)
+    const temp = req.nextUrl.href.split("/").slice(5).map(el => decodeURIComponent(el))
     
     const [u1, u2] = temp
 

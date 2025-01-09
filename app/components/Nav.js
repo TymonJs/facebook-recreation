@@ -3,8 +3,7 @@ import Link from "next/link"
 import SearchBar from "./SearchBar"
 import {getResponse, pfpOrDefault} from "@/public/consts"
 
-export default async function Nav({active="", search="", chatSearch="", loggedLogin=null}){
-    
+export default function Nav({active="", search="", chatSearch="", loggedLogin=null}){
     const links = ["",`friends`,"groups"]
     const mid_menu_icons = ["house","user-group","users"].map((el,i) => {    
         const temp = active===el?`fa-${el} active`:`fa-${el}`
