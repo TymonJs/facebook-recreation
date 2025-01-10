@@ -19,6 +19,8 @@ io.on('connection', async (socket) => {
   })
   socket.on("message", (obj) => {
     const {from,to,text} = obj
+    console.log("wysyłam msg");
+    
     io.to(getRoomName([from,to])).emit("message",obj)
     
     

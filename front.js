@@ -10,7 +10,7 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     const [messages,setMessages] = useState()
     const input = useRef()
     const {name = "",lastname = "",image = "",login = ""} = friend.user?friend.user:friend
-    const [data,setData] = useState()
+    const [divs,setDivs] = useState()
 
     const messagesToDivs = (messages) => {
         let prev;
@@ -51,7 +51,9 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
         }
 
         socket.current.on("message",obj => {
-            setData(obj) 
+            console.log("msg");
+            
+            setDivs(obj) 
         })
 
 
@@ -63,8 +65,8 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     },[])
 
     useEffect(() => {
-        if (!data) return
-        const {from,to,text} = data
+        if (!divs) return
+        const {from,to,text} = divs
         const by = from==loggedLogin?"me":"you"
         
         if (!messages || messages.length===0) {
@@ -80,7 +82,7 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
             const message = <div className={`message ${by}${spaced}`} key={i+1}>{text}</div>
             setMessages([message,...messages])
         }
-    },[data])
+    },[divs])
 
     useEffect(() => {
         if (socket.current && login){
@@ -93,7 +95,7 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     const closeMessenger = () => {
         selfRef.current.classList.remove("active")
     }
-
+    //to fix
     const sendMessage = (input) => {
         const text = input.current.value
         if (!text) return
