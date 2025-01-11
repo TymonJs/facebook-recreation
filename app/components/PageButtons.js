@@ -3,6 +3,7 @@
 import { useState} from "react";
 
 export default function PageButtons({user, loggedLoginInfo,req=false,setChattingWith}){
+    
     const {login,requests} = user
     
     const friendsButton = () => <button onClick={unFriend}><i className="fa-solid fa-check"></i><span> Znajomi</span></button>
@@ -63,8 +64,6 @@ export default function PageButtons({user, loggedLoginInfo,req=false,setChatting
    
     const startChat = () => {
         fetch(`${window.location.origin}/api/chat/${loggedLoginInfo.login}/${login}`,{method: "POST"}).then(r =>{
-            console.log(setChattingWith);
-            
             setChattingWith(user)
 
             

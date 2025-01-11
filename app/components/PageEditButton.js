@@ -1,6 +1,7 @@
 'use client'
 export default function PageEditButton(){ 
     const handleClick = () => {
+        document.getElementById("personal-page-header").classList.add("disabled")
         document.getElementById("personal-page").classList.add("disabled")
         document.querySelector("nav").classList.add("disabled")
         document.getElementById("edit-form").classList.add("enabled")    

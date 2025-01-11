@@ -8,6 +8,18 @@ body {
   background-color: rgb(24, 24, 24);
   min-height: 100vh;
 }
+body::-webkit-scrollbar {
+  width: 12px;
+}
+body::-webkit-scrollbar-track {
+  background: #252728;
+}
+body::-webkit-scrollbar-thumb {
+  background: #434444;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #315f73;
+}
 
 nav {
   flex: 1;
@@ -413,19 +425,22 @@ nav #right img:hover {
   cursor: pointer;
 }
 
-#personal-page {
-  margin-top: 7rem;
+#personal-page-header {
+  margin-top: 4rem;
 }
-#personal-page #info-header {
+#personal-page-header #info-header {
+  background-color: #1f1f1f;
+  box-shadow: 0 0 20px -20px #000;
   border-radius: 20px;
-  padding: 2rem 20%;
+  padding: 4rem 0;
+  margin: 0 20%;
   color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-#personal-page #info-header .info {
+#personal-page-header #info-header .info {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -433,55 +448,55 @@ nav #right img:hover {
   margin-right: 2rem;
   flex: 1;
 }
-#personal-page #info-header .info .text {
+#personal-page-header #info-header .info .text {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-#personal-page #info-header .info .text a {
+#personal-page-header #info-header .info .text a {
   text-decoration: none;
 }
-#personal-page #info-header .info .text p {
+#personal-page-header #info-header .info .text p {
   color: rgb(176, 179, 184);
 }
-#personal-page #info-header .info .text .friend-count {
+#personal-page-header #info-header .info .text .friend-count {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-#personal-page #info-header .info .text .friend-count span:hover {
+#personal-page-header #info-header .info .text .friend-count span:hover {
   -webkit-text-decoration: 2px solid rgb(176, 179, 184) underline;
           text-decoration: 2px solid rgb(176, 179, 184) underline;
   cursor: pointer;
 }
-#personal-page #info-header .info .text .friend-count .fa-circle {
+#personal-page-header #info-header .info .text .friend-count .fa-circle {
   font-size: 0.25rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container {
+#personal-page-header #info-header .info .text .friend-pfps-container {
   position: relative;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div {
   position: absolute;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(1) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(1) {
   left: 0rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(2) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(2) {
   left: 1.6rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(3) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(3) {
   left: 3.2rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(4) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(4) {
   left: 4.8rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(5) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(5) {
   left: 6.4rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(6) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div:nth-of-type(6) {
   left: 8rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page {
   display: none;
   position: absolute;
   bottom: -8.6rem;
@@ -491,29 +506,29 @@ nav #right img:hover {
   border-radius: 15px;
   gap: 1rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(1) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(1) {
   left: -6.4rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(2) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(2) {
   left: -4.8rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(3) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(3) {
   left: -3.2rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(4) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(4) {
   left: -1.6rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(5) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(5) {
   left: 0rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(6) {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:nth-of-type(6) {
   left: 1.6rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page:hover {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page:hover {
   display: flex;
   flex-direction: column;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .buttons button {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .buttons button {
   font-size: 0.75rem;
   padding: 0.5rem 1rem;
   display: flex;
@@ -523,63 +538,62 @@ nav #right img:hover {
   height: 3rem;
   width: 8rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .buttons button i {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .buttons button i {
   font-size: 1rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .buttons button p {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .buttons button p {
   color: white;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page img {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page img {
   width: 3rem;
   height: 3rem;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 50px;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body img {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body img {
   width: 3rem;
   height: 3rem;
   -o-object-fit: cover;
      object-fit: cover;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body .mini-info {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body .mini-info {
   color: white;
   overflow-wrap: break-word;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body .mini-info h1 {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div .mini-page .mini-body .mini-info h1 {
   white-space: nowrap;
   font-size: 1rem;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div a {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div a {
   text-decoration: none;
   color: white;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div a:hover + .mini-page {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div a:hover + .mini-page {
   display: flex;
   flex-direction: column;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div a .friend-pfp {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div a .friend-pfp {
   width: 2rem;
   height: 2rem;
   border-radius: 50px;
   border: 2px solid darkslategrey;
 }
-#personal-page #info-header .info .text .friend-pfps-container .friend-div a .friend-pfp:hover {
+#personal-page-header #info-header .info .text .friend-pfps-container .friend-div a .friend-pfp:hover {
   filter: brightness(50%);
   cursor: pointer;
 }
-#personal-page #info-header #pfp {
-  width: 14rem;
-  height: 14rem;
+#personal-page-header #info-header #pfp {
+  width: 40%;
   aspect-ratio: 1;
   border-radius: 100%;
   border: 3px solid darkslategrey;
@@ -756,6 +770,7 @@ nav #right img:hover {
   top: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 1000;
 }
 #wrapper.enabled {
   display: block;
@@ -1026,9 +1041,6 @@ nav #right img:hover {
      object-fit: cover;
   border-radius: 50px;
 }
-#messenger .head .data img:hover {
-  transform: scale(1.1);
-}
 #messenger .head i {
   color: purple;
   width: 1rem;
@@ -1048,6 +1060,10 @@ nav #right img:hover {
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1;
+}
+#messenger .body .loading {
+  align-self: center;
+  justify-self: center;
 }
 #messenger .body .message {
   padding: 0.35rem 1rem;
@@ -1114,4 +1130,131 @@ nav #right img:hover {
 #messenger .send i:active {
   transform: scale(1.1);
   background-color: inherit;
+}
+
+.loading {
+  color: #434444;
+}
+
+#personal-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 20px;
+  padding: 2rem 2rem;
+  margin: 0 25% 0;
+  color: white;
+  z-index: 1;
+}
+#personal-page .post {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #1f1f1f;
+  box-shadow: 0 0 20px -20px #000;
+  padding: 1rem;
+  border-radius: 15px;
+}
+#personal-page .post textarea {
+  flex: 1;
+  border: none;
+  border-radius: 15px;
+  padding: 0.5rem 1rem 0;
+  background-color: #2c2c2c;
+  font-size: 1.05rem;
+  color: white;
+  height: 4.5rem;
+  resize: none;
+  caret-color: #a7a6a6;
+}
+#personal-page .post textarea::-webkit-scrollbar {
+  width: 12px;
+}
+#personal-page .post textarea::-webkit-scrollbar-track {
+  background: #252728;
+  border-radius: 8px;
+}
+#personal-page .post textarea::-webkit-scrollbar-thumb {
+  background: #434444;
+  border-radius: 8px;
+}
+#personal-page .post textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #315f73;
+}
+#personal-page .post textarea:focus-visible {
+  outline: none;
+}
+#personal-page .post textarea:hover {
+  background-color: rgb(51, 51, 51);
+  cursor: pointer;
+}
+#personal-page .post textarea:active {
+  background-color: rgb(59, 59, 59);
+}
+#personal-page .post:hover .fa-trash, #personal-page .post:hover .fa-pen {
+  display: block;
+}
+#personal-page .post.send-post {
+  flex-direction: row;
+  align-items: center;
+}
+#personal-page .post.send-post i {
+  color: rgb(170, 170, 170);
+  font-size: 1.25rem;
+}
+#personal-page .post.send-post i:hover {
+  color: rgb(206, 206, 206);
+  cursor: pointer;
+}
+#personal-page .post.send-post i:active {
+  color: rgb(233, 232, 232);
+}
+#personal-page .post img {
+  border-radius: 50%;
+  width: 3rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  aspect-ratio: 1;
+}
+#personal-page .post img:hover {
+  opacity: 0.8;
+}
+#personal-page .post .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#personal-page .post .header .info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+#personal-page .post .header .info .text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+#personal-page .post .header .info .text p {
+  color: #636363;
+}
+#personal-page .post .header .icons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+#personal-page .post .header i {
+  display: none;
+  color: rgb(170, 170, 170);
+  font-size: 1.25rem;
+}
+#personal-page .post .header i:hover {
+  color: rgb(206, 206, 206);
+  cursor: pointer;
+}
+#personal-page .post .header i:active {
+  color: rgb(233, 232, 232);
+}
+
+.text-center {
+  text-align: center;
 }/*# sourceMappingURL=globals.css.map */

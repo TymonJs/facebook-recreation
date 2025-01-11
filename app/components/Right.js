@@ -6,6 +6,7 @@ import { getResponse, pfpOrDefault } from "@/public/consts"
 import Messenger from "./Messenger"
 
 export default function Right({loggedLogin,chatSearch,chattingWith, setChattingWith}){
+    
     const [name,setName] = useState(null)
     const [pfp, setPfp] = useState(`/pfps/${loggedLogin}.png`)
     const [active,setActive] = useState(chatSearch?"chat":null)

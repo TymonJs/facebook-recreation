@@ -4,7 +4,7 @@ import { getResponse,pfpOrDefault } from "@/public/consts"
 import ChatSearch from "./ChatSearch"
 
 export default function Chat({loggedLogin,chatSearch,active,messenger,setChattingWith}) {
-  const [chats,setChats] = useState(null)
+  const [chats,setChats] = useState(<p className="loading">Loading...</p>)
   
   const openMessenger = (data) => {
     if (!messenger.current.classList.contains("active")) messenger.current.classList.add("active")
@@ -29,7 +29,7 @@ export default function Chat({loggedLogin,chatSearch,active,messenger,setChattin
           return <div key={i} className="chat" onClick={() => openMessenger({user: {name,lastname,image,login},messages: c.chat.messages})}>
               <img className="pfp-mini" src={image}></img>
               <div className="text">
-                <h3>{`${login}`}</h3>
+                <h3>@{`${login}`}</h3>
                 <p>{text}</p>
               </div>
             </div>

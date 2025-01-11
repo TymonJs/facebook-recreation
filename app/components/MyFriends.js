@@ -1,35 +1,50 @@
-import database from "@/data/database.json"
+'use client'
 import Link from "next/link"
 import PageButtons from "./PageButtons"
+import { useState, useEffect } from "react"
+import { getResponse, pfpOrDefault } from "@/public/consts"
+import Nav from "./Nav"
+export default function MyFriends({loggedLogin,invites=false,activeBar, search, chatSearch}){
 
-export default function MyFriends({loggedLogin,invites=false,activeBar}){
-    const loggedUser = database.users.find(u => u.login===loggedLogin)
+    const [loggedUser,setLoggedUser] = useState()
+    const [friends,setFriends] = useState()
+    const [chattingWith,setChattingWith] = useState()
+
+    useEffect(() => {
+        fetch(`${window.location.origin}/api/user/${loggedLogin}`).then(r => {
+            getResponse(r).then(res => {
+                setLoggedUser(res.user)
+            })
+        })
+    },[])
     
-    const getFriendsFriendsInfo = (friends) => {
-        const friendsLogins = friends.map(f => f.login)
-
-        const friendsFriends = friends.reduce((acc,friend) => {
-        
-            const filteredList = friend.friends.reduce((acc2,f) => {
-                if (loggedLogin===f || friendsLogins.includes(f) || acc.includes(f)) return [...acc2]
-                return [...acc2,f]
-            },[])
-
-            return [...acc,...filteredList]
-        },[])
-
-         return database.users.filter(u=> friendsFriends.includes(u.login))
-    }
-    
-    const friends = invites
-        ?database.users.filter(u => loggedUser.requests.includes(u.login))
-        :getFriendsFriendsInfo(database.users.filter(u => loggedUser.friends.includes(u.login))).sort((a,b) => a.name.localeCompare(b.name))
-    
+    useEffect(() => {
+        if (invites){
+            console.log("abc");
+            
+            fetch(`${window.location.origin}/api/friend-invite/${loggedLogin}`).then(r => {
+                getResponse(r).then(res => {
+                    setFriends(res.users)
+                })
+            })
+        }
+        else{
+            
+            fetch(`${window.location.origin}/api/peers/${loggedLogin}`).then(r => {
+                getResponse(r).then(res => {
+                    setFriends(res.friends.sort((a,b) => a.name.localeCompare(b.name)))
+                })
+            })
+        }
+    },[])
     
     const getFriendDivs = (friends) => {
-        const fs = require('fs')
+        if (!friends || !loggedUser) return <p className="loading">Loading...</p>
         return friends.map((el,i) => {
-            const pfp = fs.existsSync(`public/pfps/${el.login}.png`)?`/pfps/${el.login}.png`:"/blank-pfp.png"
+            const pfp = pfpOrDefault(el.pfp)
+            
+            const logged = {friends:loggedUser.friends,login:loggedUser.login,requests:loggedUser.requests}
+            const curr = {friends:el.friends,name:el.name,lastname:el.lastname,requests:el.requests,login:el.login,image:pfpOrDefault(el.pfp)}
             
             return <div className="friend-card" key={i}>
                 <Link href={`/${el.login}`}>
@@ -38,25 +53,24 @@ export default function MyFriends({loggedLogin,invites=false,activeBar}){
                 <div className="friend-info">
                     <h3>{el.name} {el.lastname}</h3>
                     <div className="buttons">
-                        <PageButtons user={({friends:el.friends,requests:el.requests,login:el.login})}
-                        loggedLoginInfo={({friends:loggedUser.friends,login:loggedUser.login,requests:loggedUser.requests})} req={invites}>
+                        <PageButtons user={curr}
+                        loggedLoginInfo={logged} req={invites}
+                        setChattingWith={setChattingWith}>
                         </PageButtons>
                     </div>
                 </div>
-                        
-
         </div>
         })
     }
-
     
-    const friendDivs = friends?.length>0
-        ?<div>{getFriendDivs([...friends])}</div>
+    const friendDivs = friends?.length>0 || friends==null
+        ?<div>{getFriendDivs(friends)}</div>
         :<h1 id="no-reqs">Kiedy otrzymasz zaproszenia do grona znajomych lub propozycje znajomych, zobaczysz je tutaj.</h1>
 
-    
 
-    return <div id="my-friends-page">
+    return <>
+    <Nav active="user-group" search={search} loggedLogin={loggedLogin} chatSearch={chatSearch} chattingWith={chattingWith} setChattingWith={setChattingWith}></Nav>
+    <div id="my-friends-page">
         <div className="choice-bar">
             <h1>Znajomi</h1>
             <div className="bar-buttons">
@@ -81,4 +95,5 @@ export default function MyFriends({loggedLogin,invites=false,activeBar}){
     
         </div>
     </div>
+    </>
 }

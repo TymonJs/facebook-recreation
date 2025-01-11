@@ -2,7 +2,7 @@
 import PageButtons from "./PageButtons"
 import { pfpOrDefault } from "@/public/consts"
 
-export default function MiniPage({loggedInfo,hoverInfo,chattingWith}){
+export default function MiniPage({loggedInfo,hoverInfo,setChattingWith}){
     const {name, lastname, friends, login,requests,pfp=""} = hoverInfo
     const {loggedFriends, loggedLogin,loggedRequests} = loggedInfo
     const image = pfpOrDefault(pfp)
@@ -22,7 +22,7 @@ export default function MiniPage({loggedInfo,hoverInfo,chattingWith}){
             <div className="buttons">
                     <PageButtons user={({friends,requests,login,image,name,lastname})}
                     loggedLoginInfo={({friends:loggedFriends,requests:loggedRequests,login:loggedLogin})}
-                    chattingWith={chattingWith}>
+                    setChattingWith={setChattingWith}>
                     </PageButtons>
             </div>
         </div>

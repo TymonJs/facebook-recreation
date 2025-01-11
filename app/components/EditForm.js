@@ -20,6 +20,7 @@ export default function EditForm({pfp,userPrivacy,login}){
         if (id !== "body" && id !== "wrapper" && !x?.includes("fa-x")) return
         
         document.querySelector("nav").classList.remove("disabled")
+        document.getElementById("personal-page-header").classList.remove("disabled")
         document.getElementById("personal-page").classList.remove("disabled")
         editForm.current.classList.remove("enabled")
         wrapper.current.classList.remove("enabled")

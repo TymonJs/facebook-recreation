@@ -27,7 +27,7 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
 
     useEffect(() => {
         if (login){
-            setMessages("")
+            setMessages(<p className="loading">Loading...</p>)
             if (friend.messages){
                 setMessages(messagesToDivs(friend.messages))
             }
@@ -109,6 +109,15 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
 
     }
 
+    const handleKeyPress = (e) => {
+        if (e.key==="Enter") sendMessage(input)
+    }
+
+    const handleFocus = () => input.current.addEventListener('keypress',(e) => handleKeyPress(e))
+
+    const handleBlur = () => input.current.addEventListener('keypress',(e) => handleKeyPress(e))
+    
+
 
     return <>
         <div className="head">
@@ -125,8 +134,8 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
             {messages}
         </div>
         <div className="send">
-            <input ref={input} placeholder="Aa"></input>
-            <i className="fa-solid fa-paper-plane" onClick={() => sendMessage(input)}></i>
+            <input ref={input} placeholder="Aa"onFocus={handleFocus} onBlur={handleBlur}></input>
+            <i className="fa-solid fa-paper-plane"onClick={() => sendMessage(input)}></i>
         </div>
     </>
 }

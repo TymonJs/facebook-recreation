@@ -8,9 +8,7 @@ export default async function Requests({searchParams}){
     const head = await headers()
     const loggedLogin = head.get("loggedLogin")
     
-    //dobra opcja na lazy loading
     return (<>
-        <Nav active="user-group" search={search} loggedLogin={loggedLogin} chatSearch={chat}/>
-        <MyFriends loggedLogin={loggedLogin} invites={true} active="requests"></MyFriends>
+        <MyFriends loggedLogin={loggedLogin} invites={true} activeBar="requests" search={search} chatSearch={chat}></MyFriends>
     </>)
 }

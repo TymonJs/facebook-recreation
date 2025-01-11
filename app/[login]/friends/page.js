@@ -1,5 +1,5 @@
 import {headers} from "next/headers"
-import PersonalPageHeader from "../../components/PersonalPageHeader"
+import PersonalPageHeader from "../../components/PersonalPage"
 // import Friends from "@/app/components/Friends"
 
 export default async function FriendsPage({params,searchParams}){

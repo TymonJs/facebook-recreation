@@ -9,7 +9,6 @@ export default async function loggedFriends({searchParams}){
     const loggedLogin = head.get("loggedLogin")
     
     return (<>
-        <Nav active="user-group" search={search} loggedLogin={loggedLogin} chatSearch={chat}/>
-        <MyFriends loggedLogin={loggedLogin} activeBar={""}></MyFriends>
+        <MyFriends loggedLogin={loggedLogin} activeBar={""} active="user-group" search={search} chatSearch={chat}></MyFriends>
         </>)
 }
