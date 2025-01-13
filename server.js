@@ -25,6 +25,10 @@ io.on('connection', async (socket) => {
     const {loggedLogin,login,msgs} = obj
     io.to(getRoomName([loggedLogin,login])).emit("deleteMessage",msgs)
   })
+  socket.on("editMessage", obj => {
+    const {loggedLogin,login,text,id} = obj
+    io.to(getRoomName([loggedLogin,login])).emit("editMessage",{text,id})
+  })
 });
 
 httpServer.listen(5000, () => {

@@ -87,15 +87,44 @@ export async function DELETE(req){
 
     if (!chat) return NextResponse.json({msg:"Chat not found"},{status:400})
 
+        
     const newChat = {
         users: chat.users,
-        messages: chat.messages.filter((c,i) => i!=id)
+        messages: chat.messages.filter((c,i) => {
+            console.log(id,i);
+            return i!=id
+        })
     }
-
+        
     const fs = require('fs')
 
     fs.writeFileSync("data/chats.json",JSON.stringify({chats: [newChat,...rest]}))
     
     return NextResponse.json({messages: newChat.messages})
     
+}
+
+export async function PATCH(req){
+    const users = req.nextUrl.pathname.split("/").slice(3).map(el => decodeURIComponent(el))
+
+    const [u1 = "",u2 = ""] = users
+    const {id = "", text} = await new Response(req.body).json()
+    
+    if (!(u1 && u2 && !isNaN(id) && text)) return NextResponse.json({msg: "Wrong params"},{status:400})
+
+    let messages;
+    const updatedChats = chats.chats.reduce((acc,c) => {
+        if ((u1==c.users[0]&&u2==c.users[1])||(u1==c.users[1]&&u2==c.users[0])){
+            messages = c.messages
+            c.messages[id].text = text
+        }
+        return [...acc,c]
+    },[])
+
+    const fs = require('fs')
+
+    fs.writeFileSync("data/chats.json",JSON.stringify({chats: updatedChats}),err => err?console.log(err):null)
+
+    
+    return NextResponse.json({messages})
 }

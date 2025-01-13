@@ -7,26 +7,21 @@ import { getResponse } from "@/public/consts"
 
 export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     const socket = useRef()
-    const body = useRef()
     const [messages,setMessages] = useState()
     const input = useRef()
+    const editMsgId = useRef()
     const {name = "",lastname = "",image = "",login = ""} = friend.user?friend.user:friend
     const [data,setData] = useState()
     const [deleteMessage,setDeleteMessage] = useState()
     const [cancelEditButton,setCancelEditButton] = useState()
-    const [confirmEditButton,setConfirmEditButton] = useState()
+    const [loading,setLoading] = useState()
+    const [editText,setEditText] = useState()
 
     const cancelEdit = () => {
+        input.current.value = ""
         setCancelEditButton()
-        setConfirmEditButton()
-        setSendButton(sendButton)
     }
-
     const cancelIcon = <i className="fa-solid fa-ban" onClick={() => cancelEdit()}></i>
-    const checkIcon = <i className="fa-solid fa-check"></i>
-    const sendIcon = <i className="fa-solid fa-paper-plane"onClick={() => sendMessage(input)}></i>
-
-    const [sendButton,setSendButton] = useState(sendIcon)
 
 
     const removeMsg = (i) => {
@@ -46,13 +41,10 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
         
     }
 
-    
-
     const editMsg = (i) => {
         setCancelEditButton(cancelIcon)
-        setConfirmEditButton(checkIcon)
-        setSendButton()
-        // input.current.value = 
+        input.current.value = messages[i].text
+        editMsgId.current = i
     }
 
 
@@ -84,16 +76,18 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
 
     useEffect(() => {
         if (login){
-            setMessages(<p className="loading">Loading...</p>)
+            setLoading(<p className="loading">Loading...</p>)
+            setMessages()
             if (friend.messages){
-                setMessages(messagesToDivs(friend.messages))
+                setLoading()
+                setMessages(friend.messages)
             }
             if (!selfRef.current.classList.contains("active")) selfRef.current.classList.add("active")
             fetch(`${window.location.origin}/api/message/${login}/${loggedLogin}`).then(r => {
             if (r.ok){
                 new Response(r.body).json().then(res => {
-                    
-                    setMessages(messagesToDivs(res.messages))
+                    setLoading()
+                    setMessages(res.messages)
                 })
 
             }
@@ -112,6 +106,9 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
         socket.current.on("deleteMessage", msgs => {
             setDeleteMessage(msgs)
         })
+        socket.current.on("editMessage", obj => {
+            setEditText(obj)
+        })
         return () => {
             console.log("socket disconnect");
             socket.current.disconnect()
@@ -120,15 +117,25 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     },[])
 
     useEffect(() => {
+        if (!editText) return
+        const {text,id} = editText
+        const newMsgs = messages.reduce((acc,c,i) => {
+            if (i==id) c.text=text
+            return [...acc,c]
+        },[])
+        setMessages(newMsgs)
+    },[editText])
+
+    useEffect(() => {
         if (!deleteMessage) return
-        setMessages(messagesToDivs(deleteMessage))
+        setMessages(deleteMessage)
     },[deleteMessage])
 
     useEffect(() => {
         if (!data) return
         const {from,to,text} = data
         const by = from==loggedLogin?loggedLogin:login
-        setMessages([messagesToDivs([{by,text}],messages.length),...messages])
+        setMessages([{by,text},...messages])
     },[data])
 
     useEffect(() => {
@@ -137,36 +144,51 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
         }
     },[login])
 
+
     if (!login) return <div id="messenger"></div>
 
     const closeMessenger = () => {
         selfRef.current.classList.remove("active")
     }
 
-    const sendMessage = (input) => {
+    const sendMessage = () => {
         const text = input.current.value
         if (!text) return
-        socket.current.emit("message",({from: loggedLogin,to: login,text}))
-        fetch(`http://localhost:3000/api/message/${loggedLogin}/${login}`,{
-            method: "POST",
-            body: JSON.stringify({
-                by: loggedLogin,
-                text: text
+        if (cancelEditButton){
+            socket.current.emit("editMessage",({loggedLogin,login,text,id: editMsgId.current}))
+            fetch(`http://localhost:3000/api/message/${loggedLogin}/${login}`,{
+                method: "PATCH",
+                body: JSON.stringify({
+                    id: editMsgId.current,
+                    text
+                })
             })
-        })
+        }
+        else{
+            socket.current.emit("message",({from: loggedLogin,to: login,text}))
+            fetch(`http://localhost:3000/api/message/${loggedLogin}/${login}`,{
+                method: "POST",
+                body: JSON.stringify({
+                    by: loggedLogin,
+                    text: text
+                })
+            })
+        }
         input.current.value=""
+        setCancelEditButton()
 
     }
 
-    const handleKeyPress = (e) => {
-        if (e.key==="Enter") sendMessage(input)
-    }
+    // const handleKeyPress = (e) => {
+    //     if (e.key==="Enter"){
+    //         sendMessage(input)
+    //     }
+    // }
 
-    const handleFocus = () => input.current.addEventListener('keypress',(e) => handleKeyPress(e))
+    // const handleFocus = () => input.current.addEventListener('keypress',(e) => handleKeyPress(e))
 
-    const handleBlur = () => input.current.addEventListener('keypress',(e) => handleKeyPress(e))
+    // const handleBlur = () => input.current.addEventListener('keypress',(e) => handleKeyPress(e))
     
-
 
     return <>
         <div className="head">
@@ -179,14 +201,17 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
             </div>
             <i className="fa-solid fa-x" onClick={closeMessenger}></i>
         </div>
-        <div className="body" ref={body}>      
-            {messages}
+        <div className="body">      
+            {loading}
+            {messages?messagesToDivs(messages):null}
         </div>
         <div className="send">
-            <input ref={input} placeholder="Aa"onFocus={handleFocus} onBlur={handleBlur}></input>
+            <input ref={input} placeholder="Aa"
+            // onFocus={handleFocus} onBlur={handleBlur}
+            ></input>
             {cancelEditButton}
-            {confirmEditButton}
-            {sendButton}
+            <i className="fa-solid fa-paper-plane"onClick={() => sendMessage(input)}></i>
+            
         </div>
     </>
 }

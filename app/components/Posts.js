@@ -97,8 +97,6 @@ export default function Posts({user,loggedLogin,posts,setPosts}){
                 new Response(r.body).json().then(res => 
                     console.log(res)
                 )
-                // getResponse(r).then(res => console.log(res))
-                
             }
         })
         commentRef.current.value = ""
