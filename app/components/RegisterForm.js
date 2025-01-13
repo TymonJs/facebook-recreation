@@ -56,10 +56,10 @@ export default function Form(){
 
 
         if (login.value.includes("|")){
-            if (!login.classList.contains("wrong-data")) el.classList.add("wrong-data")
+            if (!login.classList.contains("wrong-data")) login.classList.add("wrong-data")
         }
         else{
-            if (login.classList.contains("wrong-data")) el.classList.remove("wrong-data")
+            if (login.classList.contains("wrong-data")) login.classList.remove("wrong-data")
         }
 
         data.forEach(el => {
@@ -97,29 +97,32 @@ export default function Form(){
             login: login.value,
             password: password.value
         }
-        const response = fetch("api/register",{
+        const response = fetch("api/user",{
             method:"POST",
             body:JSON.stringify(json)
         })
-        .then(res => new Response(res.body).json())
         .then(res => {
-            if (res.success){
-                apiLogin(login.value,password.value)
-                .then(token => {
-                    const date = new Date()
-                    date.setDate(date.getDate() + 1)
-                    document.cookie = `token=${token};expire=${date}`
-                    replace("/")
-                })
-                .catch(err => {
-                    console.log(err);
-                    replace("/login")
-                })
-            }
+            if (!res.ok) setWarning(res.msg)
             else{
-                setWarning(res.msg)
+                new Response(res.body).json()
+                .then(res => {
+                    apiLogin(login.value,password.value)
+                    .then(token => {
+                        const date = new Date()
+                        date.setDate(date.getDate() + 1)
+                        document.cookie = `token=${token};expire=${date}`
+                        replace("/")
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        replace("/login")
+                    })
+                    
+                    
+                })
             }
         })
+        
 
         
           

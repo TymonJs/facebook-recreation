@@ -210,6 +210,7 @@ nav #right img:hover {
 .right-dropdown#settings {
   padding: 1rem 0.5rem;
   gap: 0.2rem;
+  width: 15rem;
 }
 .right-dropdown#settings a {
   text-decoration: none;
@@ -241,12 +242,22 @@ nav #right img:hover {
   cursor: pointer;
   background-color: rgb(53, 52, 52);
 }
+.right-dropdown#settings button#remove-account {
+  color: red;
+}
+.right-dropdown#settings button#remove-account i {
+  color: red;
+}
 .right-dropdown#settings button i {
   font-size: 1.25rem;
   background-color: #2b2a2a;
 }
 .right-dropdown#settings button i:hover {
   background-color: #2b2a2a;
+}
+.right-dropdown#settings button i.fa-exclamation {
+  aspect-ratio: 1;
+  width: 1rem;
 }
 
 #form_container {
@@ -615,7 +626,7 @@ nav #right img:hover {
   background-color: rgb(37, 39, 40);
   padding: 1rem;
   border-right: 1px solid rgb(54, 53, 53);
-  height: 28vh;
+  height: 13rem;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   display: flex;
@@ -763,7 +774,7 @@ nav #right img:hover {
   filter: blur(5px);
 }
 
-#wrapper {
+#wrapper, #post-wrapper {
   display: none;
   position: fixed;
   left: 0;
@@ -772,11 +783,11 @@ nav #right img:hover {
   height: 100vh;
   z-index: 1000;
 }
-#wrapper.enabled {
+#wrapper.enabled, #post-wrapper.enabled {
   display: block;
 }
 
-#edit-form {
+#edit-form, #post-form {
   display: none;
   position: fixed;
   color: white;
@@ -793,13 +804,13 @@ nav #right img:hover {
   font-size: 0.9rem;
   overflow: auto;
 }
-#edit-form .btn {
+#edit-form .btn, #post-form .btn {
   display: flex;
   justify-content: right;
   align-items: flex-end;
   height: 15vh;
 }
-#edit-form .btn > .submit {
+#edit-form .btn > .submit, #post-form .btn > .submit {
   display: flex;
   padding: 1rem;
   background-color: rgb(27, 108, 236);
@@ -811,36 +822,36 @@ nav #right img:hover {
   width: -moz-fit-content;
   width: fit-content;
 }
-#edit-form .btn > .submit:hover {
+#edit-form .btn > .submit:hover, #post-form .btn > .submit:hover {
   background-color: rgb(20, 87, 194);
   cursor: pointer;
 }
-#edit-form::-webkit-scrollbar {
+#edit-form::-webkit-scrollbar, #post-form::-webkit-scrollbar {
   width: 12px;
 }
-#edit-form::-webkit-scrollbar-track {
+#edit-form::-webkit-scrollbar-track, #post-form::-webkit-scrollbar-track {
   background: #252728;
   border-radius: 8px;
 }
-#edit-form::-webkit-scrollbar-thumb {
+#edit-form::-webkit-scrollbar-thumb, #post-form::-webkit-scrollbar-thumb {
   background: #434444;
   border-radius: 8px;
 }
-#edit-form::-webkit-scrollbar-thumb:hover {
+#edit-form::-webkit-scrollbar-thumb:hover, #post-form::-webkit-scrollbar-thumb:hover {
   background-color: #315f73;
 }
-#edit-form.enabled {
+#edit-form.enabled, #post-form.enabled {
   display: block;
 }
-#edit-form #title {
+#edit-form #title, #post-form #title {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 1rem;
 }
-#edit-form #title h1 {
+#edit-form #title h1, #post-form #title h1 {
   text-align: center;
 }
-#edit-form #title i {
+#edit-form #title i, #post-form #title i {
   text-align: right;
   padding: 1rem;
   border-radius: 50px;
@@ -849,55 +860,55 @@ nav #right img:hover {
   right: 1rem;
   color: lightgrey;
 }
-#edit-form #title i:hover {
+#edit-form #title i:hover, #post-form #title i:hover {
   cursor: pointer;
   background-color: rgb(70, 69, 69);
 }
-#edit-form .edits {
+#edit-form .edits, #post-form .edits {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-#edit-form .edits .edit {
+#edit-form .edits .edit, #post-form .edits .edit {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-#edit-form .edits .edit .warning {
+#edit-form .edits .edit .warning, #post-form .edits .edit .warning {
   color: red;
   font-size: 1.1rem;
 }
-#edit-form .edits .edit .head {
+#edit-form .edits .edit .head, #post-form .edits .edit .head {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-#edit-form .edits .edit .head input {
+#edit-form .edits .edit .head input, #post-form .edits .edit .head input {
   display: none;
 }
-#edit-form .edits .edit .head label {
+#edit-form .edits .edit .head label, #post-form .edits .edit .head label {
   font-size: 1.2rem;
   color: rgb(49, 124, 236);
 }
-#edit-form .edits .edit .head label:last-child {
+#edit-form .edits .edit .head label:last-child, #post-form .edits .edit .head label:last-child {
   margin-left: 1rem;
 }
-#edit-form .edits .edit .head label:hover {
+#edit-form .edits .edit .head label:hover, #post-form .edits .edit .head label:hover {
   cursor: pointer;
   -webkit-text-decoration: 1px solid rgb(49, 124, 236) underline;
           text-decoration: 1px solid rgb(49, 124, 236) underline;
 }
-#edit-form .edits .edit .body {
+#edit-form .edits .edit .body, #post-form .edits .edit .body {
   display: flex;
   align-items: center;
 }
-#edit-form .edits .edit .body.body-center {
+#edit-form .edits .edit .body.body-center, #post-form .edits .edit .body.body-center {
   justify-content: center;
 }
-#edit-form .edits .edit .body.body-space-around {
+#edit-form .edits .edit .body.body-space-around, #post-form .edits .edit .body.body-space-around {
   justify-content: space-around;
 }
-#edit-form .edits .edit .body.body-space-around button {
+#edit-form .edits .edit .body.body-space-around button, #post-form .edits .edit .body.body-space-around button {
   border: none;
   background-color: inherit;
   color: white;
@@ -905,28 +916,28 @@ nav #right img:hover {
   padding: 1rem;
   border-radius: 15px;
 }
-#edit-form .edits .edit .body.body-space-around button:hover {
+#edit-form .edits .edit .body.body-space-around button:hover, #post-form .edits .edit .body.body-space-around button:hover {
   background-color: rgb(49, 49, 49);
   cursor: pointer;
 }
-#edit-form .edits .edit .body.body-space-around button.active {
+#edit-form .edits .edit .body.body-space-around button.active, #post-form .edits .edit .body.body-space-around button.active {
   background-color: rgb(8, 102, 255);
 }
-#edit-form .edits .edit .body.body-space-around button.active:hover {
+#edit-form .edits .edit .body.body-space-around button.active:hover, #post-form .edits .edit .body.body-space-around button.active:hover {
   background-color: rgb(7, 92, 230);
 }
-#edit-form .edits .edit .body #pfp {
+#edit-form .edits .edit .body #pfp, #post-form .edits .edit .body #pfp {
   width: 200px;
   height: 200px;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 50%;
 }
-#edit-form .edits .edit .body #pfp:hover {
+#edit-form .edits .edit .body #pfp:hover, #post-form .edits .edit .body #pfp:hover {
   cursor: pointer;
   opacity: 0.8;
 }
-#edit-form .edits .edit .body input {
+#edit-form .edits .edit .body input, #post-form .edits .edit .body input {
   background-color: inherit;
   border: none;
   border-bottom: 1px solid lightslategrey;
@@ -934,7 +945,7 @@ nav #right img:hover {
   width: 100%;
   color: white;
 }
-#edit-form .edits .edit .body input:focus-visible {
+#edit-form .edits .edit .body input:focus-visible, #post-form .edits .edit .body input:focus-visible {
   outline: none;
 }
 
@@ -1065,22 +1076,45 @@ nav #right img:hover {
   align-self: center;
   justify-self: center;
 }
-#messenger .body .message {
+#messenger .body .message-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+#messenger .body .message-row.me {
+  justify-content: flex-end;
+}
+#messenger .body .message-row.you {
+  justify-content: flex-start;
+}
+#messenger .body .message-row.spaced {
+  margin-bottom: 1rem;
+}
+#messenger .body .message-row:hover .icons {
+  display: flex;
+}
+#messenger .body .message-row .icons {
+  height: -moz-fit-content;
+  height: fit-content;
+  align-self: center;
+  gap: 0.25rem;
+  display: none;
+}
+#messenger .body .message-row .icons i {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+#messenger .body .message-row .message {
   padding: 0.35rem 1rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  max-width: 90%;
+  max-width: 60%;
   border-radius: 15px;
 }
-#messenger .body .message.spaced {
-  margin-bottom: 1rem;
-}
-#messenger .body .me {
+#messenger .body .message-row .message.me {
   background-color: rgb(35, 50, 192);
-  align-self: flex-end;
 }
-#messenger .body .you {
-  align-self: flex-start;
+#messenger .body .message-row .message.you {
   background-color: rgb(56, 56, 56);
 }
 #messenger .body::-webkit-scrollbar {
@@ -1116,12 +1150,17 @@ nav #right img:hover {
   outline: none;
 }
 #messenger .send i {
-  margin-right: 0.5rem;
   color: purple;
   font-size: 1.25rem;
   padding: 0.5rem;
   border-radius: 50px;
   background-color: inherit;
+}
+#messenger .send i.fa-ban {
+  color: rgb(155, 14, 49);
+}
+#messenger .send i:last-child {
+  margin-right: 0.5rem;
 }
 #messenger .send i:hover {
   background-color: rgb(39, 39, 39);
@@ -1134,6 +1173,43 @@ nav #right img:hover {
 
 .loading {
   color: #434444;
+}
+
+textarea {
+  flex: 1;
+  border: none;
+  border-radius: 15px;
+  padding: 0.5rem 1rem 0;
+  background-color: #2c2c2c;
+  font-size: 1.05rem;
+  color: white;
+  height: 4.5rem;
+  resize: none;
+  caret-color: #a7a6a6;
+}
+textarea::-webkit-scrollbar {
+  width: 12px;
+}
+textarea::-webkit-scrollbar-track {
+  background: #252728;
+  border-radius: 8px;
+}
+textarea::-webkit-scrollbar-thumb {
+  background: #434444;
+  border-radius: 8px;
+}
+textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #315f73;
+}
+textarea:focus-visible {
+  outline: none;
+}
+textarea:hover {
+  background-color: rgb(51, 51, 51);
+  cursor: pointer;
+}
+textarea:active {
+  background-color: rgb(59, 59, 59);
 }
 
 #personal-page {
@@ -1154,42 +1230,6 @@ nav #right img:hover {
   box-shadow: 0 0 20px -20px #000;
   padding: 1rem;
   border-radius: 15px;
-}
-#personal-page .post textarea {
-  flex: 1;
-  border: none;
-  border-radius: 15px;
-  padding: 0.5rem 1rem 0;
-  background-color: #2c2c2c;
-  font-size: 1.05rem;
-  color: white;
-  height: 4.5rem;
-  resize: none;
-  caret-color: #a7a6a6;
-}
-#personal-page .post textarea::-webkit-scrollbar {
-  width: 12px;
-}
-#personal-page .post textarea::-webkit-scrollbar-track {
-  background: #252728;
-  border-radius: 8px;
-}
-#personal-page .post textarea::-webkit-scrollbar-thumb {
-  background: #434444;
-  border-radius: 8px;
-}
-#personal-page .post textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #315f73;
-}
-#personal-page .post textarea:focus-visible {
-  outline: none;
-}
-#personal-page .post textarea:hover {
-  background-color: rgb(51, 51, 51);
-  cursor: pointer;
-}
-#personal-page .post textarea:active {
-  background-color: rgb(59, 59, 59);
 }
 #personal-page .post:hover .fa-trash, #personal-page .post:hover .fa-pen {
   display: block;
@@ -1234,6 +1274,10 @@ nav #right img:hover {
   flex-direction: column;
   gap: 0.1rem;
 }
+#personal-page .post .header .info .text span {
+  font-weight: 400;
+  color: #636363;
+}
 #personal-page .post .header .info .text p {
   color: #636363;
 }
@@ -1254,7 +1298,160 @@ nav #right img:hover {
 #personal-page .post .header i:active {
   color: rgb(233, 232, 232);
 }
+#personal-page .post .body a {
+  color: rgb(0, 140, 255);
+}
+#personal-page .post .body a:hover {
+  color: rgb(107, 187, 252);
+}
+#personal-page .post .interactives {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#personal-page .post .interactives i {
+  font-size: 0.9rem;
+  color: white;
+  background-color: rgb(0, 88, 202);
+  padding: 0.3rem;
+  border-radius: 50%;
+}
+#personal-page .post .interactives i:hover {
+  background-color: rgb(2, 100, 230);
+  cursor: pointer;
+}
+#personal-page .post .interactives p:last-child {
+  color: lightgrey;
+}
+#personal-page .post .interactives p:last-child:hover {
+  -webkit-text-decoration: 1px solid lightgrey underline;
+          text-decoration: 1px solid lightgrey underline;
+  cursor: pointer;
+}
 
 .text-center {
   text-align: center;
+}
+
+#edit-post, #comments {
+  display: none;
+  border-radius: 25px;
+  padding: 1rem;
+  position: fixed;
+  font-size: 1rem;
+  width: 40rem;
+  height: 10rem;
+  right: 50%;
+  top: 50%;
+  margin-right: -20rem;
+  margin-top: -5rem;
+  background-color: #252728;
+  flex-direction: column;
+}
+#edit-post.enabled, #comments.enabled {
+  display: flex;
+}
+#edit-post textarea, #comments textarea {
+  height: 100%;
+}
+#edit-post div, #comments div {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
+}
+#edit-post div button, #comments div button {
+  border: none;
+  border-radius: 15px;
+  right: 1rem;
+  bottom: 1rem;
+  width: 5rem;
+  aspect-ratio: 2;
+  color: white;
+  font-weight: 600;
+}
+#edit-post div button:hover, #comments div button:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+#edit-post div button:first-child, #comments div button:first-child {
+  background-color: rgb(63, 63, 63);
+}
+#edit-post div button:last-child, #comments div button:last-child {
+  background-color: rgb(35, 66, 243);
+}
+
+#comments {
+  padding: 1rem;
+  height: 20rem;
+  margin-top: -10rem;
+}
+#comments .header {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#comments .header i {
+  color: lightgrey;
+}
+#comments .header i:hover {
+  color: lightslategrey;
+  cursor: pointer;
+}
+#comments .body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  overflow-y: auto;
+  justify-content: flex-start;
+  flex: 1;
+}
+#comments .body .comment {
+  background-color: #2f2f30;
+  padding: 0.5rem;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  margin-top: 0;
+  margin-right: 1rem;
+}
+#comments .body .comment h3 {
+  font-size: 1rem;
+}
+#comments .body::-webkit-scrollbar {
+  width: 12px;
+}
+#comments .body::-webkit-scrollbar-track {
+  background: #252728;
+  border-radius: 8px;
+}
+#comments .body::-webkit-scrollbar-thumb {
+  background: #434444;
+  border-radius: 8px;
+}
+#comments .body::-webkit-scrollbar-thumb:hover {
+  background-color: #315f73;
+}
+#comments .footer {
+  display: flex;
+}
+#comments .footer input {
+  flex: 1;
+  border: none;
+  background-color: #363636;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  color: white;
+  font-size: 1rem;
+}
+#comments .footer input:focus-visible {
+  outline: none;
+}
+#comments .footer i:hover {
+  cursor: pointer;
 }/*# sourceMappingURL=globals.css.map */

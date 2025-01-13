@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRef } from "react"
 import {io} from "socket.io-client"
+import { getResponse } from "@/public/consts"
 
 export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     const socket = useRef()
@@ -11,17 +12,73 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     const input = useRef()
     const {name = "",lastname = "",image = "",login = ""} = friend.user?friend.user:friend
     const [data,setData] = useState()
+    const [deleteMessage,setDeleteMessage] = useState()
+    const [cancelEditButton,setCancelEditButton] = useState()
+    const [confirmEditButton,setConfirmEditButton] = useState()
 
-    const messagesToDivs = (messages) => {
+    const cancelEdit = () => {
+        setCancelEditButton()
+        setConfirmEditButton()
+        setSendButton(sendButton)
+    }
+
+    const cancelIcon = <i className="fa-solid fa-ban" onClick={() => cancelEdit()}></i>
+    const checkIcon = <i className="fa-solid fa-check"></i>
+    const sendIcon = <i className="fa-solid fa-paper-plane"onClick={() => sendMessage(input)}></i>
+
+    const [sendButton,setSendButton] = useState(sendIcon)
+
+
+    const removeMsg = (i) => {
+        fetch(`${window.location.origin}/api/message/${loggedLogin}/${login}`, {
+            method: "DELETE",
+            body: JSON.stringify({
+                id:i
+            })
+        })
+        .then(r => {
+            if (r.ok){
+                getResponse(r).then(res => {
+                    socket.current.emit("deleteMessage",{loggedLogin,login,msgs:res.messages})
+                })
+            }
+        })
+        
+    }
+
+    
+
+    const editMsg = (i) => {
+        setCancelEditButton(cancelIcon)
+        setConfirmEditButton(checkIcon)
+        setSendButton()
+        // input.current.value = 
+    }
+
+
+    const messagesToDivs = (messages,key="") => {
         let prev;
         return messages.map((el,i) => {
             const by = el.by==login?"you":"me"
-            if (prev && prev!==by){
-                prev=by
-                return <div className={`message ${by} spaced`} key={i}>{el.text}</div>
-            }
+            const msg =<div className={`message ${by}`}>
+                <p>{el.text}</p>
+            </div> 
+            
+            const spaced = prev&&prev!==by?" spaced":""
             prev=by
-            return <div className={`message ${by}`} key={i}>{el.text}</div>
+            const icons = by==="me"
+                ?<>
+                    <div className="icons">
+                        <i className="fa-solid fa-trash" onClick={() => removeMsg(key?key:i)}></i>
+                        <i className="fa-solid fa-pen" onClick={() => editMsg(key?key:i)}></i>
+                    </div>
+                    
+                 </>
+                :null
+            return <div className={`message-row ${by}${spaced}`} key={key?key:i}>
+                {icons}
+                {msg}
+            </div>
         })
     }
 
@@ -49,12 +106,12 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
             socket.current = io("http://localhost:5000")
             // console.log('socket connect');
         }
-
         socket.current.on("message",obj => {
             setData(obj) 
         })
-
-
+        socket.current.on("deleteMessage", msgs => {
+            setDeleteMessage(msgs)
+        })
         return () => {
             console.log("socket disconnect");
             socket.current.disconnect()
@@ -63,23 +120,15 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
     },[])
 
     useEffect(() => {
+        if (!deleteMessage) return
+        setMessages(messagesToDivs(deleteMessage))
+    },[deleteMessage])
+
+    useEffect(() => {
         if (!data) return
         const {from,to,text} = data
-        const by = from==loggedLogin?"me":"you"
-        
-        if (!messages || messages.length===0) {
-            
-            setMessages([<div className={`message ${by}`} key={0}>{text}</div>])
-        }
-        else{
-            const i = messages.length-1
-            const spaced =messages[i].props.className.includes("me")
-                    ?""
-                    :" spaced"
-            
-            const message = <div className={`message ${by}${spaced}`} key={i+1}>{text}</div>
-            setMessages([message,...messages])
-        }
+        const by = from==loggedLogin?loggedLogin:login
+        setMessages([messagesToDivs([{by,text}],messages.length),...messages])
     },[data])
 
     useEffect(() => {
@@ -135,7 +184,9 @@ export default function Messenger({friend = "",loggedLogin = "",selfRef}){
         </div>
         <div className="send">
             <input ref={input} placeholder="Aa"onFocus={handleFocus} onBlur={handleBlur}></input>
-            <i className="fa-solid fa-paper-plane"onClick={() => sendMessage(input)}></i>
+            {cancelEditButton}
+            {confirmEditButton}
+            {sendButton}
         </div>
     </>
 }

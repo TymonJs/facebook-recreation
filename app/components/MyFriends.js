@@ -84,8 +84,6 @@ export default function MyFriends({loggedLogin,invites=false,activeBar, search, 
                     ?<button className="active"><i className="fa-solid fa-envelope-circle-check"></i><span>Zaproszenia do grona znajomych</span></button>
                     :<Link href="friends/requests"><button><i className="fa-solid fa-envelope-circle-check"></i><span>Zaproszenia do grona znajomych</span></button></Link>
                 }
-                
-                <button><i className="fa-solid fa-cake-candles"></i><span>Urodziny</span></button>
             </div>
             
         </div>

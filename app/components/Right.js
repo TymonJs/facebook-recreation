@@ -91,7 +91,6 @@ export default function Right({loggedLogin,chatSearch,chattingWith, setChattingW
         </div>
         <div ref={messenger} id="messenger">
             <Messenger selfRef={messenger} friend={chattingWith} loggedLogin={loggedLogin}></Messenger>
-
         </div>
 
     </div>

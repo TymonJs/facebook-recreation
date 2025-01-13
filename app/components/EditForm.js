@@ -71,7 +71,7 @@ export default function EditForm({pfp,userPrivacy,login}){
         const privacySend = privacy!==userPrivacy?privacy:null
 
         if ((descSend || pfpSend || privacySend)){
-            fetch("/api/profile",{
+            fetch("/api/user",{
                 method: "PATCH",
                 body: JSON.stringify({
                     login,

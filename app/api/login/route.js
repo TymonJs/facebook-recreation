@@ -28,10 +28,10 @@ export async function POST(request){
                 const newTokens = {tokens: [...tokens.tokens.filter(t => t.login!=login),{token,login}]}
                 fs.writeFileSync("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
 
-                return NextResponse.json({success:true, serverSessionProof: serverSession.proof})
+                return NextResponse.json({serverSessionProof: serverSession.proof})
             }
             catch{
-                return NextResponse.json({success:false,msg:"Hasło jest niepoprawne"})
+                return NextResponse.json({msg:"Hasło jest niepoprawne"},{stauts:400})
             }
             
             
@@ -43,7 +43,7 @@ export async function POST(request){
         const {login,clientEphemeralPublic} = json
         const user = prev.users.find(u => u.login===login)
         
-        if (!user) return NextResponse.json({success:false,msg:"Ten login jest niezarejestrowany"})
+        if (!user) return NextResponse.json({msg:"Ten login jest niezarejestrowany"},{status:400})
 
         const {salt,verifier} = user
         const serverEphemeral = srp.generateEphemeral(verifier)
@@ -73,14 +73,14 @@ export async function POST(request){
         const fs = require('fs')
         await fs.writeFileSync("data/secrets.json",JSON.stringify(newJson), err => err?console.log(err):null)
         
-        return NextResponse.json({success: true, serverEphemeralPublic,salt})
+        return NextResponse.json({serverEphemeralPublic,salt})
 
         
     }
     catch (e){
         console.log(e);
         
-        return NextResponse.json({success: false ,msg: "Dane są nieprawidłowe"})
+        return NextResponse.json({msg: "Dane są nieprawidłowe"},{status:400})
     }
     
 }

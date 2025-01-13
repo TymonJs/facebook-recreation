@@ -13,40 +13,43 @@ export const apiLogin = (login,password) => {
             body: JSON.stringify({login,clientEphemeralPublic: clientEphemeral.public})
         })
         .then(res => {
-            new Response(res.body).json()
-            .then(serv => {
-                
-                if (!serv.success) reject("Ten login nie jest zarejestrowany")
-                    else{
-                        const {salt, serverEphemeralPublic} = serv
-                        
-                        const privateKey = srp.derivePrivateKey(salt, login, password)
-                        const clientSession = srp.deriveSession(clientEphemeral.secret, serverEphemeralPublic, salt, login, privateKey)
-                        
-                        fetch("api/login",{
-                            method:"POST",
-                            body: JSON.stringify({proof: clientSession.proof,login,clientEphemeralPublic: clientEphemeral.public,salt, token: clientSession.key})
-                        })
-                        .then(res => {
-                            
+            if (!res.ok) reject("Ten login nie jest zarejestrowany")
+            else {
+                new Response(res.body).json()
+                .then(serv => {
+                    const {salt, serverEphemeralPublic} = serv
+                    
+                    const privateKey = srp.derivePrivateKey(salt, login, password)
+                    const clientSession = srp.deriveSession(clientEphemeral.secret, serverEphemeralPublic, salt, login, privateKey)
+                    
+                    fetch("api/login",{
+                        method:"POST",
+                        body: JSON.stringify({proof: clientSession.proof,login,clientEphemeralPublic: clientEphemeral.public,salt, token: clientSession.key})
+                    })
+                    .then(res => {
+                        if (!res.ok) reject("Złe hasło")
+                        else{
                             new Response(res.body).json().then(auth => {
-                                if (!auth.success) reject("Złe hasło")
-                                else{    
-                                    srp.verifySession(clientEphemeral.public, clientSession, auth.serverSessionProof)
-                                    resolve(clientSession.key)
+                             
+                                srp.verifySession(clientEphemeral.public, clientSession, auth.serverSessionProof)
+                                resolve(clientSession.key)
                                                         
-                                }
-
+                                
+        
                             }).catch(e => {
                                 console.log(e);
                                 
                             })
-                        })
-                    }
-            }).catch(e => {
-                console.log(e);
-                
-            })      
+                        }
+                        
+                    })
+                    
+                }).catch(e => {
+                    console.log(e);
+                    
+                })
+            }
+                 
                 
             
         })

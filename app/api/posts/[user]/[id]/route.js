@@ -28,3 +28,37 @@ export async function DELETE(req){
 
     return NextResponse.json({posts:user.posts})
 }
+
+export async function PATCH(req){
+    const temp = req.nextUrl.pathname.split("/")
+    const [login,id] = temp.slice(temp.length-2).map(e => decodeURIComponent(e))
+    
+    const {body = ""} = await new Response(req.body).json()
+
+    if (!(login && !isNaN(id) && id>=0 && body)) return NextResponse.json({msg:"Wrong params"},{status:400})
+
+    let user;
+    const rest = db.users.reduce((acc,c) => {
+        if (c.login===login){
+            user = c
+            return acc
+        }
+        return [...acc,c]
+    },[])
+
+    if (!user) return NextResponse.json({msg: "User not found"},{status:400})
+    if (!user.posts) return NextResponse.json({msg: "User doesn't have any posts"},{status:400})
+
+    user.posts = user.posts.reduce((acc,el,i) => {
+        if (i==id) el.body=body
+        return [...acc,el]
+    },[])
+    
+
+    const fs = require('fs')
+
+    fs.writeFileSync("data/database.json",JSON.stringify({users:[...rest,user]}),err => err?console.log(err):null)
+    
+
+    return NextResponse.json({posts:user.posts})
+}

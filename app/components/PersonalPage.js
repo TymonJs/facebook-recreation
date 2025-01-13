@@ -130,5 +130,6 @@ export default function PersonalPageHeader({search,login,loggedLogin,chatSearch=
     <div id="personal-page">
         <PersonalPage user={user} loggedLogin={loggedLogin}></PersonalPage>
     </div>
+
     </> 
 }

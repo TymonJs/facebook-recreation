@@ -5,7 +5,7 @@ const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH']
   }
 })
 
@@ -20,8 +20,10 @@ io.on('connection', async (socket) => {
   socket.on("message", (obj) => {
     const {from,to,text} = obj
     io.to(getRoomName([from,to])).emit("message",obj)
-    
-    
+  })
+  socket.on("deleteMessage", (obj) => {
+    const {loggedLogin,login,msgs} = obj
+    io.to(getRoomName([loggedLogin,login])).emit("deleteMessage",msgs)
   })
 });
 

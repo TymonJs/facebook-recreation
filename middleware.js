@@ -10,10 +10,8 @@ export async function middleware(req) {
     
     if ((pathname==="/register" || pathname==="/login")){
         
-        
         if (!token) return NextResponse.next()
-            
-        
+                
         try{
             req.nextUrl.pathname = "/"
             if (tokens.tokens.some(el => el.token===token.value)) return NextResponse.redirect(new URL(req.nextUrl.href))
@@ -22,21 +20,16 @@ export async function middleware(req) {
         catch(e){
             console.log("error");
             
-            return NextResponse.redirect(new URL(req.nextUrl.href))
-            
-        }
-
-        
+            return NextResponse.redirect(new URL(req.nextUrl.href))           
+        }       
     }
 
     else{   
         
         if (!token) return NextResponse.redirect(new URL("/login",req.url))
  
-        try{
-            
-            if (!tokens) return NextResponse.redirect(new URL("/login",req.url))
-            
+        try{         
+            if (!tokens) return NextResponse.redirect(new URL("/login",req.url))    
             const found = tokens.tokens.find(el => el.token==token.value)
             
             if (found){
