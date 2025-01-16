@@ -1212,7 +1212,7 @@ textarea:active {
   background-color: rgb(59, 59, 59);
 }
 
-#personal-page {
+#personal-page, #home {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -1222,7 +1222,7 @@ textarea:active {
   color: white;
   z-index: 1;
 }
-#personal-page .post {
+#personal-page .content, #home .content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -1231,99 +1231,99 @@ textarea:active {
   padding: 1rem;
   border-radius: 15px;
 }
-#personal-page .post:hover .fa-trash, #personal-page .post:hover .fa-pen {
+#personal-page .content:hover .fa-trash, #personal-page .content:hover .fa-pen, #home .content:hover .fa-trash, #home .content:hover .fa-pen {
   display: block;
 }
-#personal-page .post.send-post {
+#personal-page .content.send-post, #home .content.send-post {
   flex-direction: row;
   align-items: center;
 }
-#personal-page .post.send-post i {
+#personal-page .content.send-post i, #home .content.send-post i {
   color: rgb(170, 170, 170);
   font-size: 1.25rem;
 }
-#personal-page .post.send-post i:hover {
+#personal-page .content.send-post i:hover, #home .content.send-post i:hover {
   color: rgb(206, 206, 206);
   cursor: pointer;
 }
-#personal-page .post.send-post i:active {
+#personal-page .content.send-post i:active, #home .content.send-post i:active {
   color: rgb(233, 232, 232);
 }
-#personal-page .post img {
+#personal-page .content img, #home .content img {
   border-radius: 50%;
   width: 3rem;
   -o-object-fit: cover;
      object-fit: cover;
   aspect-ratio: 1;
 }
-#personal-page .post img:hover {
+#personal-page .content img:hover, #home .content img:hover {
   opacity: 0.8;
 }
-#personal-page .post .header {
+#personal-page .content .header, #home .content .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-#personal-page .post .header .info {
+#personal-page .content .header .info, #home .content .header .info {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
-#personal-page .post .header .info .text {
+#personal-page .content .header .info .text, #home .content .header .info .text {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
 }
-#personal-page .post .header .info .text span {
+#personal-page .content .header .info .text span, #home .content .header .info .text span {
   font-weight: 400;
   color: #636363;
 }
-#personal-page .post .header .info .text p {
+#personal-page .content .header .info .text p, #home .content .header .info .text p {
   color: #636363;
 }
-#personal-page .post .header .icons {
+#personal-page .content .header .icons, #home .content .header .icons {
   display: flex;
   flex-direction: row;
   gap: 1rem;
 }
-#personal-page .post .header i {
+#personal-page .content .header i, #home .content .header i {
   display: none;
   color: rgb(170, 170, 170);
   font-size: 1.25rem;
 }
-#personal-page .post .header i:hover {
+#personal-page .content .header i:hover, #home .content .header i:hover {
   color: rgb(206, 206, 206);
   cursor: pointer;
 }
-#personal-page .post .header i:active {
+#personal-page .content .header i:active, #home .content .header i:active {
   color: rgb(233, 232, 232);
 }
-#personal-page .post .body a {
+#personal-page .content .body a, #home .content .body a {
   color: rgb(0, 140, 255);
 }
-#personal-page .post .body a:hover {
+#personal-page .content .body a:hover, #home .content .body a:hover {
   color: rgb(107, 187, 252);
 }
-#personal-page .post .interactives {
+#personal-page .content .interactives, #home .content .interactives {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-#personal-page .post .interactives i {
+#personal-page .content .interactives i, #home .content .interactives i {
   font-size: 0.9rem;
   color: white;
   background-color: rgb(0, 88, 202);
   padding: 0.3rem;
   border-radius: 50%;
 }
-#personal-page .post .interactives i:hover {
+#personal-page .content .interactives i:hover, #home .content .interactives i:hover {
   background-color: rgb(2, 100, 230);
   cursor: pointer;
 }
-#personal-page .post .interactives p:last-child {
+#personal-page .content .interactives p:last-child, #home .content .interactives p:last-child {
   color: lightgrey;
 }
-#personal-page .post .interactives p:last-child:hover {
+#personal-page .content .interactives p:last-child:hover, #home .content .interactives p:last-child:hover {
   -webkit-text-decoration: 1px solid lightgrey underline;
           text-decoration: 1px solid lightgrey underline;
   cursor: pointer;

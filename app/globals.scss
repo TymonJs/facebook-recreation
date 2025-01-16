@@ -1301,7 +1301,7 @@ textarea{
     }
 }
 
-#personal-page{
+#personal-page, #home{
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -1310,7 +1310,7 @@ textarea{
     margin: 0 25% 0;
     color: white;
     z-index: 1;
-    .post{
+    .content{
         display: flex;
         flex-direction: column;
         gap: 0.5rem;

@@ -17,9 +17,8 @@ export async function POST(req){
     const temp = req.nextUrl.pathname.split("/")
     const login = decodeURIComponent(temp[temp.length-1])
     const post = await new Response(req.body).json()
-    
     if (!(login && post)) return NextResponse.json({msg:"Wrong params"},{status:400})
-
+        
     let user;
     const rest = db.users.reduce((acc,c) => {
         if (c.login===login){

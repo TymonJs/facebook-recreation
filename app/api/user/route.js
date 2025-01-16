@@ -5,7 +5,8 @@ import srp from 'secure-remote-password/client'
 export async function GET(req){
     const searchParams = new URL(req.url).searchParams
     const keys = Array.from(searchParams.keys()).map(k => decodeURIComponent(k))
-    
+
+    if (keys.length===0) return NextResponse.json({users: database.users})
     if (keys.length !== new Set(keys).size) return NextResponse.json({msg:"Can't resolve 2 identical queries"},{status:400})
     
     const users = database.users.reduce((acc,u) => {

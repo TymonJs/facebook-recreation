@@ -35,8 +35,6 @@ export default function Posts({user,loggedLogin,posts,setPosts}){
     }
 
     const sendEdit = (text) => {
-        console.log(text.current.value);
-        
         fetch(`${window.location.origin}/api/posts/${user.login}/${postEditId.current}`,{
             method: "PATCH",
             body: JSON.stringify({body: text.current.value})
@@ -105,7 +103,7 @@ export default function Posts({user,loggedLogin,posts,setPosts}){
 
     return <>
         {posts.map((post,i) => {
-            return <div className="post" key={i}>
+            return <div className="content" key={i}>
 
                 <div className="header">
                     <div className="info">

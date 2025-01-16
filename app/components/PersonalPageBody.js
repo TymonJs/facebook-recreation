@@ -34,7 +34,7 @@ export default function PersonalPage({user,loggedLogin}){
     
     return <>
         {user.login===loggedLogin
-            ?<div className="send-post post">
+            ?<div className="send-post content">
                 <Link href={`/${user.login}`}><img src={image}></img></Link>
                 <textarea ref={input} placeholder="Co słychać?">
                 </textarea>

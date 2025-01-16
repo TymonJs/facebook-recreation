@@ -6,8 +6,8 @@ import {getResponse, pfpOrDefault} from "@/public/consts"
 import { useState } from "react"
 
 export default function Nav({active="", search="", chatSearch="", loggedLogin=null,chattingWith,setChattingWith}){    
-    const links = ["",`friends`,"groups"]
-    const mid_menu_icons = ["house","user-group","users"].map((el,i) => {    
+    const links = ["",`friends`]
+    const mid_menu_icons = ["house","user-group"].map((el,i) => {    
         const temp = active===el?`fa-${el} active`:`fa-${el}`
         
         const icon = <Link href={`/${links[i]}`} key={i}><i className={`fa-solid ${temp}`}></i></Link>
