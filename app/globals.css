@@ -475,7 +475,10 @@ nav #right img:hover {
   align-items: center;
   gap: 0.5rem;
 }
-#personal-page-header #info-header .info .text .friend-count span:hover {
+#personal-page-header #info-header .info .text .friend-count span:first-child a {
+  color: rgb(176, 179, 184);
+}
+#personal-page-header #info-header .info .text .friend-count span:first-child a:hover {
   -webkit-text-decoration: 2px solid rgb(176, 179, 184) underline;
           text-decoration: 2px solid rgb(176, 179, 184) underline;
   cursor: pointer;

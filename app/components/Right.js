@@ -79,9 +79,7 @@ export default function Right({loggedLogin,chatSearch,chattingWith, setChattingW
     // const cw = chattingWith==undefined?useRef(""):chattingWith
     return <>
     <div id="right">
-        <i className="fa-solid fa-bars"></i>
         <i className={`fa-brands fa-facebook-messenger${active=="chat"?" active":""}`} onClick={toggleChat}></i>
-        <i className="fa-solid fa-bell"></i>
         {image}
         <div id="chat" className={`right-dropdown${active=="chat"?" active":""}`}>
             <Chat loggedLogin={loggedLogin} chatSearch={chatSearch} active={active} messenger={messenger} setChattingWith={setChattingWith}/>

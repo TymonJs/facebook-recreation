@@ -55,14 +55,14 @@ export default function PersonalPageHeader({search,login,loggedLogin,chatSearch=
                 })
 
                 
-                const out = <><Link href={`/friends/${login}`}>
-                        <p className="friend-count"><span>{friends?friends.length:"Brak"} znajomych</span>
+                const out = <>
+                        <p className="friend-count"><span><Link href={`/friends/list/${login}`}>{friends?friends.length:"Brak"} znajomych</Link></span>
                             {loggedLogin!=login
                             ?<><i className="fa-solid fa-circle"></i>
                             <span>{`${friends.filter(u => loggedLoginInfo.friends.includes(u)).length} Wspólnych  znajomych`}</span></>
                             :null}
                         </p>
-                    </Link>
+                    
                     <div className="friend-pfps-container">{friendsInfo}</div>
                 </>
                 

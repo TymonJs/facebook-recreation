@@ -522,7 +522,8 @@ nav{
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
-                    span{
+                    span:first-child a{
+                        color: rgb(176, 179, 184);
                         &:hover{
                             text-decoration: 2px solid rgb(176, 179, 184) underline;
                             cursor: pointer;
