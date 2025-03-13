@@ -14,7 +14,6 @@ A ```Next.js/React project``` that mimics main functionalities of facebook.
 
  - Next.js
  - React
- - Cookies
  - Websocket
  - SRP
 
