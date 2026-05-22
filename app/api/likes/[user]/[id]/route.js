@@ -1,42 +1,25 @@
-import db from "@/data/database.json"
 import { NextResponse } from "next/server";
+import { getUserHydrated, getUserRow } from "@/lib/db/user-data.js";
+import { getPostRowByIndex, toggleLike } from "@/lib/db/post-helpers.js";
 
-export async function PATCH(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const [login,id] = temp.slice(temp.length-2).map(e => decodeURIComponent(e))
-    const {likeLogin = ""} = await new Response(req.body).json()
+export async function PATCH(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const [login, id] = temp
+    .slice(temp.length - 2)
+    .map((e) => decodeURIComponent(e));
+  const { likeLogin = "" } = await new Response(req.body).json();
 
-    let user;
-    const rest = db.users.reduce((acc,c) => {
-        if (c.login===login){
-            user = c
-            return acc
-        }
-        return [...acc,c]
-    },[])
+  if (!(await getUserRow(login)))
+    return NextResponse.json({ msg: "User not found" }, { status: 400 });
 
-    if (!user) return NextResponse.json({msg: "User not found"},{status:400})
+  const post = await getPostRowByIndex(login, Number(id));
+  if (!post)
+    return NextResponse.json({ msg: "Post not found" }, { status: 400 });
 
-    const likes = user.posts[id]?.likes
-    if (likes){
-        const found = likes.find(l => l===likeLogin)
-        if (found){
-            user.posts[id].likes = likes.reduce((acc,c) => {
-                if (c===likeLogin) return acc
-                return [...acc,c]
-            },[])
-        }
-        else{
-            user.posts[id].likes.push(likeLogin)
-        }
-    }
-    else{
-        user.posts[id].likes = [likeLogin]
-    }
+  await toggleLike(post.id, likeLogin);
 
-    const fs = require("fs")
+  const user = await getUserHydrated(login);
+  const postsList = user?.posts || [];
 
-    fs.writeFileSync("data/database.json",JSON.stringify({users: [...rest,user]}),err => err?console.log(err):null)
-
-    return NextResponse.json({msg: "Like updated",posts: user.posts})
+  return NextResponse.json({ msg: "Like updated", posts: postsList });
 }

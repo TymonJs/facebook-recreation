@@ -1,86 +1,88 @@
 import { NextResponse } from "next/server";
-import prev from "@/data/database.json"
-import srp from "secure-remote-password/server"
-import secrets from "@/data/secrets.json"
-import tokens from "@/data/tokens.json"
+import srp from "secure-remote-password/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/index.js";
+import { users } from "@/lib/db/schema.js";
+import {
+  deleteSrpSecret,
+  getSrpSecret,
+  setSrpSecret,
+  setToken,
+} from "@/lib/auth-cache.js";
 
-export async function POST(request){
-    const data = request.body
-    try{
-        const json = await new Response(data).json()
+export async function POST(request) {
+  const data = request.body;
+  try {
+    const json = await new Response(data).json();
 
-        if (json.proof) {
+    if (json.proof) {
+      const { proof, login, clientEphemeralPublic, token } = json;
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.login, login))
+        .limit(1);
 
-            const {proof, login, clientEphemeralPublic, token} = json
-            const user = prev.users.find(u => u.login===login)
+      if (!user)
+        return NextResponse.json(
+          { msg: "Ten login jest niezarejestrowany" },
+          { status: 400 },
+        );
 
-            const {salt,verifier} = user
-            const df = secrets.secrets.find(u => u.login===login)
-            
-            try{
-                const serverSession = srp.deriveSession(df.secret, clientEphemeralPublic, salt, login, verifier, proof)                
+      const { salt, verifier } = user;
+      const secret = await getSrpSecret(login);
 
-                const fs = require("fs")
+      if (!secret)
+        return NextResponse.json(
+          { msg: "Brak aktywnej sesji logowania" },
+          { status: 400 },
+        );
 
-                const newSecrets = {secrets: secrets.secrets.filter(c => c.login!==login)}
-                fs.writeFileSync("data/secrets.json",JSON.stringify(newSecrets),err => err?console.log(err):null)
-                
-                const newTokens = {tokens: [...tokens.tokens.filter(t => t.login!=login),{token,login}]}
-                fs.writeFileSync("data/tokens.json",JSON.stringify(newTokens),err => err?console.log(err):null)
+      try {
+        const serverSession = srp.deriveSession(
+          secret,
+          clientEphemeralPublic,
+          salt,
+          login,
+          verifier,
+          proof,
+        );
 
-                return NextResponse.json({serverSessionProof: serverSession.proof})
-            }
-            catch{
-                return NextResponse.json({msg:"Hasło jest niepoprawne"},{stauts:400})
-            }
-            
-            
-            
-        }
-        
-        
-        
-        const {login,clientEphemeralPublic} = json
-        const user = prev.users.find(u => u.login===login)
-        
-        if (!user) return NextResponse.json({msg:"Ten login jest niezarejestrowany"},{status:400})
+        await deleteSrpSecret(login);
+        await setToken(token, login);
 
-        const {salt,verifier} = user
-        const serverEphemeral = srp.generateEphemeral(verifier)
-        const serverEphemeralPublic = serverEphemeral.public
-
-        let newJson;
-        if (secrets.secrets){
-            newJson = {
-                secrets: 
-                secrets.secrets.reduce((acc,c) => {
-                    if (c.login===login) return [...acc]
-                    return [...acc,c]
-                },[{login,secret:serverEphemeral.secret}])
-    
-            }
-        }
-        else{
-            newJson = {
-                secrets: [{
-                    login,
-                    secret:serverEphemeral.secret
-                }]
-            }
-        }
-        
-
-        const fs = require('fs')
-        await fs.writeFileSync("data/secrets.json",JSON.stringify(newJson), err => err?console.log(err):null)
-        
-        return NextResponse.json({serverEphemeralPublic,salt})
-
-        
+        return NextResponse.json({ serverSessionProof: serverSession.proof });
+      } catch {
+        return NextResponse.json(
+          { msg: "Hasło jest niepoprawne" },
+          { stauts: 400 },
+        );
+      }
     }
-    catch (e){
-        console.log(e);
-        
-        return NextResponse.json({msg: "Dane są nieprawidłowe"},{status:400})
-    }
-    
+
+    const { login, clientEphemeralPublic } = json;
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.login, login))
+      .limit(1);
+
+    if (!user)
+      return NextResponse.json(
+        { msg: "Ten login jest niezarejestrowany" },
+        { status: 400 },
+      );
+
+    const { salt, verifier } = user;
+    const serverEphemeral = srp.generateEphemeral(verifier);
+    const serverEphemeralPublic = serverEphemeral.public;
+
+    await setSrpSecret(login, serverEphemeral.secret);
+
+    return NextResponse.json({ serverEphemeralPublic, salt });
+  } catch (e) {
+    console.log(e);
+
+    return NextResponse.json({ msg: "Dane są nieprawidłowe" }, { status: 400 });
+  }
 }

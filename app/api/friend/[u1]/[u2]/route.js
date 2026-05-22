@@ -1,22 +1,26 @@
-import { NextResponse } from "next/server"
-import db from "@/data/database.json"
+import { NextResponse } from "next/server";
+import { getUserRow, getUsersHydrated } from "@/lib/db/user-data.js";
+import { getFriendLogins } from "@/lib/db/friends-helpers.js";
 
-export async function GET(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const [u1,u2] = temp.slice(temp.length-2).map(el => decodeURIComponent(el))
+export async function GET(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const [u1, u2] = temp
+    .slice(temp.length - 2)
+    .map((el) => decodeURIComponent(el));
 
-    const {info1,info2} = db.users.reduce((acc,c) => {
-        if (c.login==u1) acc.info1=c
-        else if (c.login==u2) acc.info2=c
-        return acc
-    },{})
+  const info1 = await getUserRow(u1);
+  const info2 = await getUserRow(u2);
 
-    if (!(info1&&info2)) return NextResponse.json({msg: "Users not found"},{status:400})
+  if (!(info1 && info2))
+    return NextResponse.json({ msg: "Users not found" }, { status: 400 });
 
+  const friends1 = await getFriendLogins(u1);
+  const friends2 = await getFriendLogins(u2);
+  const mutualLogins = friends2.filter((u) => friends1.includes(u));
 
-    const mutualLogins = info2.friends.filter(u => info1.friends.includes(u))
-    
-    const friends = db.users.filter(c => mutualLogins.includes(c.login))
-    
-    return NextResponse.json({friends})
+  const friends = mutualLogins.length
+    ? await getUsersHydrated(mutualLogins)
+    : [];
+
+  return NextResponse.json({ friends });
 }

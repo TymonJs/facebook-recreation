@@ -6,22 +6,30 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate --config drizzle.config.mjs",
+    "db:migrate": "drizzle-kit migrate --config drizzle.config.mjs",
+    "migrate:data": "node scripts/migrate-json-to-postgres.mjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.33.0",
     "formik": "^2.4.6",
     "lodash": "^4.17.21",
     "next": "15.1.2",
     "nodemon": "^3.1.9",
+    "pg": "^8.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "redis": "^4.7.0",
     "secure-remote-password": "^0.3.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.24.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }

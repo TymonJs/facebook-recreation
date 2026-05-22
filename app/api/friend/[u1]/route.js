@@ -1,15 +1,20 @@
-import { NextResponse } from "next/server"
-import db from "@/data/database.json"
+import { NextResponse } from "next/server";
+import { getUsersHydrated, getUserRow } from "@/lib/db/user-data.js";
+import { getFriendLogins } from "@/lib/db/friends-helpers.js";
 
-export async function GET(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const from = temp[temp.length-1]
+export async function GET(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const from = temp[temp.length - 1];
 
-    const user = db.users.find(u => u.login==from)
+  const user = await getUserRow(from);
 
-    if (!user) return NextResponse.json({msg: "User not found"},{status:400})
+  if (!user)
+    return NextResponse.json({ msg: "User not found" }, { status: 400 });
 
-    const friends = db.users.filter(u => user.friends.includes(u.login) )
-    
-    return NextResponse.json({friends})
+  const friendLogins = await getFriendLogins(from);
+  const friends = friendLogins.length
+    ? await getUsersHydrated(friendLogins)
+    : [];
+
+  return NextResponse.json({ friends });
 }

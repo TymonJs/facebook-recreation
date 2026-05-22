@@ -1,64 +1,65 @@
-import { NextResponse } from "next/server"
-import db from "@/data/database.json"
+import { NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/index.js";
+import { posts } from "@/lib/db/schema.js";
+import { getUserRow, getUserHydrated } from "@/lib/db/user-data.js";
+import {
+  getPostRowByIndex,
+  reindexPostsAfterDelete,
+} from "@/lib/db/post-helpers.js";
 
-export async function DELETE(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const [login,id] = temp.slice(temp.length-2).map(e => decodeURIComponent(e))
-    
-    if (!(login && !isNaN(id) && id>=0)) return NextResponse.json({msg:"Wrong params"},{status:400})
+export async function DELETE(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const [login, id] = temp
+    .slice(temp.length - 2)
+    .map((e) => decodeURIComponent(e));
 
-    let user;
-    const rest = db.users.reduce((acc,c) => {
-        if (c.login===login){
-            user = c
-            return acc
-        }
-        return [...acc,c]
-    },[])
+  if (!(login && !isNaN(id) && id >= 0))
+    return NextResponse.json({ msg: "Wrong params" }, { status: 400 });
 
-    if (!user) return NextResponse.json({msg: "User not found"},{status:400})
-    if (!user.posts) return NextResponse.json({msg: "User doesn't have any posts"},{status:400})
+  if (!(await getUserRow(login)))
+    return NextResponse.json({ msg: "User not found" }, { status: 400 });
 
-    user.posts = user.posts.filter((el,i) => i!=id)
+  const post = await getPostRowByIndex(login, Number(id));
+  if (!post)
+    return NextResponse.json(
+      { msg: "User doesn't have any posts" },
+      { status: 400 },
+    );
 
-    const fs = require('fs')
+  await db.delete(posts).where(eq(posts.id, post.id));
+  await reindexPostsAfterDelete(login, Number(id));
 
-    fs.writeFileSync("data/database.json",JSON.stringify({users:[...rest,user]}),err => err?console.log(err):null)
-    
+  const user = await getUserHydrated(login);
+  const postsList = user?.posts || [];
 
-    return NextResponse.json({posts:user.posts})
+  return NextResponse.json({ posts: postsList });
 }
 
-export async function PATCH(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const [login,id] = temp.slice(temp.length-2).map(e => decodeURIComponent(e))
-    
-    const {body = ""} = await new Response(req.body).json()
+export async function PATCH(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const [login, id] = temp
+    .slice(temp.length - 2)
+    .map((e) => decodeURIComponent(e));
 
-    if (!(login && !isNaN(id) && id>=0 && body)) return NextResponse.json({msg:"Wrong params"},{status:400})
+  const { body = "" } = await new Response(req.body).json();
 
-    let user;
-    const rest = db.users.reduce((acc,c) => {
-        if (c.login===login){
-            user = c
-            return acc
-        }
-        return [...acc,c]
-    },[])
+  if (!(login && !isNaN(id) && id >= 0 && body))
+    return NextResponse.json({ msg: "Wrong params" }, { status: 400 });
 
-    if (!user) return NextResponse.json({msg: "User not found"},{status:400})
-    if (!user.posts) return NextResponse.json({msg: "User doesn't have any posts"},{status:400})
+  if (!(await getUserRow(login)))
+    return NextResponse.json({ msg: "User not found" }, { status: 400 });
 
-    user.posts = user.posts.reduce((acc,el,i) => {
-        if (i==id) el.body=body
-        return [...acc,el]
-    },[])
-    
+  const post = await getPostRowByIndex(login, Number(id));
+  if (!post)
+    return NextResponse.json(
+      { msg: "User doesn't have any posts" },
+      { status: 400 },
+    );
 
-    const fs = require('fs')
+  await db.update(posts).set({ body }).where(eq(posts.id, post.id));
 
-    fs.writeFileSync("data/database.json",JSON.stringify({users:[...rest,user]}),err => err?console.log(err):null)
-    
-
-    return NextResponse.json({posts:user.posts})
+  const user = await getUserHydrated(login);
+  const postsList = user?.posts || [];
+  return NextResponse.json({ posts: postsList });
 }
