@@ -1,53 +1,48 @@
-import { NextResponse } from "next/server"
-import db from "@/data/database.json"
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db/index.js";
+import { posts } from "@/lib/db/schema.js";
+import { getUserHydrated, getUserRow } from "@/lib/db/user-data.js";
+import { getNextPostIndex } from "@/lib/db/post-helpers.js";
 
-export function GET(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const login = temp[temp.length-1]
-    if (!login) return NextResponse.json({msg:"Wrong params"},{status:400})
+export async function GET(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const login = temp[temp.length - 1];
+  if (!login)
+    return NextResponse.json({ msg: "Wrong params" }, { status: 400 });
 
-    const posts = db.users.find(u => u.login === login)?.posts
-    
-    if (!posts) return NextResponse.json({posts: []})
+  const user = await getUserHydrated(login);
+  const postsList = user?.posts || [];
 
-    return NextResponse.json({posts})
+  return NextResponse.json({ posts: postsList });
 }
 
-export async function POST(req){
-    const temp = req.nextUrl.pathname.split("/")
-    const login = decodeURIComponent(temp[temp.length-1])
-    const post = await new Response(req.body).json()
-    if (!(login && post)) return NextResponse.json({msg:"Wrong params"},{status:400})
-        
-    let user;
-    const rest = db.users.reduce((acc,c) => {
-        if (c.login===login){
-            user = c
-            return acc
-        }
-        return [...acc,c]
-    },[])
+export async function POST(req) {
+  const temp = req.nextUrl.pathname.split("/");
+  const login = decodeURIComponent(temp[temp.length - 1]);
+  const post = await new Response(req.body).json();
+  if (!(login && post))
+    return NextResponse.json({ msg: "Wrong params" }, { status: 400 });
 
-    if (!user) return NextResponse.json({msg: "User not found"},{status:400})
+  if (!(await getUserRow(login)))
+    return NextResponse.json({ msg: "User not found" }, { status: 400 });
 
-    const today = new Date();
-    const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const year = today.getFullYear().toString();
-    
-    post["date"] = [day,month,year]
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const year = today.getFullYear().toString();
 
-    if (!user.posts){
-        user.posts = [post]
-    }
-    else{
-        user.posts = user.posts.reduce((acc,c) => [...acc,c],[post])
-    }
-    rest.push(user)
+  const createdDate = `${year}-${month}-${day}`;
+  const postIndex = await getNextPostIndex(login);
 
-    const fs = require("fs")
-    fs.writeFileSync("data/database.json",JSON.stringify({users: rest}),err => err?console.log(error):null)
+  await db.insert(posts).values({
+    userLogin: login,
+    postIndex,
+    body: post.body || "",
+    createdDate,
+  });
 
-    return NextResponse.json({msg:"Post created",posts: user.posts})
+  const user = await getUserHydrated(login);
+  const postsList = user?.posts || [];
 
+  return NextResponse.json({ msg: "Post created", posts: postsList });
 }
